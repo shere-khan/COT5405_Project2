@@ -21,18 +21,26 @@ class Graph:
         def opposite(self, v):
             return self.__end if v is self.__end else self.__start
 
-    def __init__(self):
-        self.__matrix = {}
+    def __init__(self, directed=False):
+        self.__outgoing = {}
+        self.__incoming = {} if directed else self.__outgoing
 
     def insert_vertex(self, x=None):
         v = self.Vertex(x)
-        self.__matrix[v] = {}
+        self.__outgoing[v] = {}
         return v
 
     def insert_edge(self, u, v, x=None):
         e = self.Edge(u, v, x)
-        self.__matrix[u][v] = e
+        self.__outgoing[u][v] = e
+        self.__incoming[v][u] = e
 
     def adjacent_edges(self, v):
-        for edge in self.__matrix[v].values():
+        for edge in self.__outgoing[v].values():
             yield edge
+
+
+class GraphTool:
+    @staticmethod
+    def populate_graph():
+        pass
