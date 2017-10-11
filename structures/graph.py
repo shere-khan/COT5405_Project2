@@ -134,5 +134,16 @@ class GraphTool:
                     to_visit_queue.append(v)
 
     @staticmethod
-    def print_graph_matrix(g):
+    def print_graph_matrix_sequentially(g):
+        for u, vmap in g.outgoing().items():
+            for v, e, in vmap.items():
+                print(u, v, e)
+
+    @staticmethod
+    def dijkstras(s, f):
         pass
+
+    @staticmethod
+    @def relax_node():
+        pass
+
