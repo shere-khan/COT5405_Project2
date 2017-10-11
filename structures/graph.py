@@ -4,7 +4,8 @@ import copy
 
 class Graph:
     class Vertex:
-        def __init__(self, x):
+        def __init__(self, vid, x):
+            self.__id = vid
             self.__data = x
             self.__discovered = False
 
@@ -20,6 +21,12 @@ class Graph:
         def __hash__(self):
             return hash(id(self))
 
+        def __repr__(self):
+            return "id: {}".format(self.__id)
+
+        def __str__(self):
+            return "id: {}".format(self.__id)
+
     class Edge:
         def __init__(self, u, v, x):
             self.__start = u
@@ -32,6 +39,12 @@ class Graph:
         def opposite(self, v):
             return self.__end if v is self.__end else self.__start
 
+        def __repr__(self):
+            return "id: {}".format(self.__id)
+
+        def __str__(self):
+            return "({}, {}) data: {}".format(self.__start, self.__end, self.__data)
+
     def __init__(self, directed=False):
         self.__outgoing = {}
         self.__incoming = {} if directed else self.__outgoing
@@ -39,8 +52,8 @@ class Graph:
     def outgoing(self):
         return self.__outgoing
 
-    def insert_vertex(self, x=None):
-        v = self.Vertex(x)
+    def insert_vertex(self, id, x=None):
+        v = self.Vertex(id, x)
         node_map = {v: {}}
         # map[v] = {}
         for u, vmap in self.__outgoing.items():
@@ -70,25 +83,27 @@ class GraphTool:
     def create_connected_graph(g, num_nodes, min_conn, max_conn, max_weight, add_edge=0.1):
 
         for i in range(num_nodes):
-            g.insert_vertex('oo')
+            g.insert_vertex(i + 1, 'oo')
 
         for u, vmap in g.outgoing().items():
             num_conn = 0
-            is_new_edge = False
-            while num_conn < min_conn or (is_new_edge and num_conn < max_conn):
+            insert_extra_edge = False
+            while num_conn < min_conn or (insert_extra_edge and num_conn < max_conn):
                 available = list(g.outgoing())
                 v = random.choice(available)
                 has_edge = bool(g.outgoing()[u][v])
-
                 v_is_u = v is u
+                # Make sure new node is not itself and there
+                # is no edge bw new node and v
                 while v_is_u or has_edge:
                     v = random.choice(available)
                     v_is_u = v is u
                     has_edge = bool(g.outgoing()[u][v])
+
                 w = random.randint(1, max_weight)
                 g.insert_edge(u, v, w)
                 num_conn += 1
-                is_new_edge = random.randint(0, 100) < add_edge * 100
+                insert_extra_edge = random.randint(0, 100) < add_edge * 100
 
     @staticmethod
     def is_connected(g):
