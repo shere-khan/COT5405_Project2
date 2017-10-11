@@ -79,6 +79,7 @@ class GraphTool:
                 available = list(g.outgoing())
                 v = random.choice(available)
                 has_edge = bool(g.outgoing()[u][v])
+
                 v_is_u = v is u
                 while v_is_u or has_edge:
                     v = random.choice(available)
