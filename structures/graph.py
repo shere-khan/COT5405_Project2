@@ -41,12 +41,17 @@ class Graph:
 
     def insert_vertex(self, x=None):
         v = self.Vertex(x)
-        map = {}
+        node_map = {v: {}}
+        # map[v] = {}
         for u, vmap in self.__outgoing.items():
-            map[u] = {}
+            # initialize the new node's map that has as
+            # keys all the nodes in the current outgoing map
+            node_map[u] = {}
+            # set the new node as a key for itself
+            # set the new node as a key for all the existing nodes
             vmap[v] = {}
 
-        self.__outgoing[v] = map
+        self.__outgoing[v] = node_map
 
         return v
 
@@ -67,19 +72,18 @@ class GraphTool:
         for i in range(num_nodes):
             g.insert_vertex('oo')
 
-        # available = list(copy.deepcopy(g.outgoing()))
         for u, vmap in g.outgoing().items():
             num_conn = 0
             is_new_edge = False
             while num_conn < min_conn or (is_new_edge and num_conn < max_conn):
                 available = list(g.outgoing())
                 v = random.choice(available)
-                # if g.outgoing()[u] is None:
-                #     print ('test')
-                # if g.outgoing()[u][v] is None:
-                #     print('None')
-                while v is u and v in g.outgoing()[u] and g.outgoing()[u][v] is not None:
+                has_edge = bool(g.outgoing()[u][v])
+                v_is_u = v is u
+                while v_is_u or has_edge:
                     v = random.choice(available)
+                    v_is_u = v is u
+                    has_edge = bool(g.outgoing()[u][v])
                 w = random.randint(1, max_weight)
                 g.insert_edge(u, v, w)
                 num_conn += 1
