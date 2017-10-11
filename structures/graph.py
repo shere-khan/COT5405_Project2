@@ -1,10 +1,18 @@
 import random
+import copy
 
 
 class Graph:
     class Vertex:
         def __init__(self, x):
             self.__data = x
+            self.__discovered = False
+
+        def set_discovered(self, val):
+            self.__discovered = val
+
+        def get_discovered(self):
+            return self.__discovered
 
         def data(self):
             return self.__data
@@ -33,7 +41,13 @@ class Graph:
 
     def insert_vertex(self, x=None):
         v = self.Vertex(x)
-        self.__outgoing[v] = {}
+        map = {}
+        for u, vmap in self.__outgoing.items():
+            map[u] = {}
+            vmap[v] = {}
+
+        self.__outgoing[v] = map
+
         return v
 
     def insert_edge(self, u, v, x=None):
@@ -53,18 +67,51 @@ class GraphTool:
         for i in range(num_nodes):
             g.insert_vertex('oo')
 
+        # available = list(copy.deepcopy(g.outgoing()))
         for u, vmap in g.outgoing().items():
             num_conn = 0
             is_new_edge = False
             while num_conn < min_conn or (is_new_edge and num_conn < max_conn):
-                x = list(g.outgoing())
-                v = random.choice(x)
-                while v is u:
-                    v = random.choice(x)
+                available = list(g.outgoing())
+                v = random.choice(available)
+                # if g.outgoing()[u] is None:
+                #     print ('test')
+                # if g.outgoing()[u][v] is None:
+                #     print('None')
+                while v is u and v in g.outgoing()[u] and g.outgoing()[u][v] is not None:
+                    v = random.choice(available)
                 w = random.randint(1, max_weight)
                 g.insert_edge(u, v, w)
                 num_conn += 1
                 is_new_edge = random.randint(0, 100) < add_edge * 100
+
+    @staticmethod
+    def is_connected(g):
+        u = random.choice(list(g.outgoing()))
+        GraphTool.breadth_first_traversal(g, u, lambda *args: None)
+        for u, vmap in g.outgoing().items():
+            for v in vmap.items():
+                if v[0].get_discovered() is False:
+                    return False
+
+        return True
+
+    @staticmethod
+    def breadth_first_traversal(g, s, f):
+        ''' g = graph
+            s = source node
+            f = function to run while traversing graph '''
+        f(s)
+        s.set_discovered(True)
+        to_visit_queue = [s]
+        while to_visit_queue:
+            u = to_visit_queue.pop(0)
+            f(u)
+            neighbors = g.outgoing()[u]
+            for v in neighbors:
+                if v.get_discovered() is False:
+                    v.set_discovered(True)
+                    to_visit_queue.append(v)
 
     @staticmethod
     def print_graph_matrix(g):
