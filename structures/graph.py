@@ -1,3 +1,6 @@
+import random
+
+
 class Graph:
     class Vertex:
         def __init__(self, x):
@@ -25,6 +28,9 @@ class Graph:
         self.__outgoing = {}
         self.__incoming = {} if directed else self.__outgoing
 
+    def outgoing(self):
+        return self.__outgoing
+
     def insert_vertex(self, x=None):
         v = self.Vertex(x)
         self.__outgoing[v] = {}
@@ -42,5 +48,22 @@ class Graph:
 
 class GraphTool:
     @staticmethod
-    def populate_graph():
-        pass
+    def create_connected_graph(g, num_nodes, min_conn, max_conn, max_weight, add_edge=0.1):
+
+        for i in range(num_nodes):
+            g.insert_vertex('oo')
+
+        for u, vmap in g.outgoing().items():
+            num_conn = 0
+            is_new_edge = False
+            while num_conn < min_conn or (is_new_edge and num_conn < max_conn):
+                x = list(g.outgoing())
+                v = None
+                while not v:
+                    random.choice(x)
+                e = vmap[v]
+                if e is None:
+                    w = random.randint(1, max_weight)
+                    g.insert_edge(u, v, w)
+                    num_conn += 1
+                is_new_edge = random.randint(0, 100) < add_edge * 100
