@@ -1,5 +1,4 @@
 import random
-import copy
 
 
 class Graph:
@@ -40,7 +39,7 @@ class Graph:
             return self.__end if v is self.__end else self.__start
 
         def __repr__(self):
-            return "id: {}".format(self.__id)
+            return "({}, {}) data: {}".format(self.__start, self.__end, self.__data)
 
         def __str__(self):
             return "({}, {}) data: {}".format(self.__start, self.__end, self.__data)
@@ -53,7 +52,7 @@ class Graph:
         return self.__outgoing
 
     def insert_vertex(self, id, x=None):
-        v = self.Vertex(id, x)
+        v = Graph.Vertex(id, x)
         node_map = {v: {}}
         # map[v] = {}
         for u, vmap in self.__outgoing.items():
@@ -118,9 +117,15 @@ class GraphTool:
 
     @staticmethod
     def breadth_first_traversal(g, s, f):
-        ''' g = graph
-            s = source node
-            f = function to run while traversing graph '''
+        """
+
+        :param g: graph
+        :param s: source node
+        :param f: function to run while traversing graph
+
+        :return:
+        """
+
         f(s)
         s.set_discovered(True)
         to_visit_queue = [s]
@@ -140,10 +145,22 @@ class GraphTool:
                 print(u, v, e)
 
     @staticmethod
-    def dijkstras(s, f):
-        pass
+    def dijkstras(g, s):
+        """
+        :param g: graph
+        :param s: source node
+        :return:
+
+        """
+        prev = {}
+        for u, vmap in g.outgoing().items():
+            prev[u] = None
+
+        s.data(0)
+        Q = [s]
+        # while Q:
+        #     u =
 
     @staticmethod
     def relax_node():
         pass
-
