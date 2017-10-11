@@ -144,6 +144,6 @@ class GraphTool:
         pass
 
     @staticmethod
-    @def relax_node():
+    def relax_node():
         pass
 
