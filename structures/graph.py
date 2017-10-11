@@ -58,12 +58,14 @@ class GraphTool:
             is_new_edge = False
             while num_conn < min_conn or (is_new_edge and num_conn < max_conn):
                 x = list(g.outgoing())
-                v = None
-                while not v:
-                    random.choice(x)
-                e = vmap[v]
-                if e is None:
-                    w = random.randint(1, max_weight)
-                    g.insert_edge(u, v, w)
-                    num_conn += 1
+                v = random.choice(x)
+                while v is u:
+                    v = random.choice(x)
+                w = random.randint(1, max_weight)
+                g.insert_edge(u, v, w)
+                num_conn += 1
                 is_new_edge = random.randint(0, 100) < add_edge * 100
+
+    @staticmethod
+    def print_graph_matrix(g):
+        pass
