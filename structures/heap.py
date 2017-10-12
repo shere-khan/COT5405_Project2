@@ -2,13 +2,16 @@ class Heap:
     def __init__(self):
         self.__data = []
 
-    def __parent(self, j):
+    @staticmethod
+    def __parent(j):
         return (j - 1) // 2
 
-    def __left(self, j):
+    @staticmethod
+    def __left(j):
         return 2 * j + 1
 
-    def __right(self, j):
+    @staticmethod
+    def __right(j):
         return 2 * j + 2
 
     def __insert(self, i):
@@ -39,3 +42,12 @@ class Heap:
         if p(i, j):
             self.__swap(i, j)
             self.__heapify_down(j, p)
+
+    def dequeue(self):
+        elem = self.__data[0]
+        self.__swap(0, len(self.__data))
+        self.__data.remove(len(self.__data))
+
+        self.__heapify_down(0, lambda x, y: x < y)
+
+        return elem
