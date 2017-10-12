@@ -1,5 +1,6 @@
 from structures import graph
 from structures import heap
+import random
 
 if __name__ == '__main__':
     g = graph.Graph()
@@ -7,5 +8,8 @@ if __name__ == '__main__':
     print(graph.GraphTool.is_connected(g))
     graph.GraphTool.print_graph_matrix_sequentially(g)
 
-    t = heap.HeapPriorityQueue()
+    t = heap.Heap()
+    heapsize = 10
+    for i in range(10):
+        t.insert(random.randint(1, 20), lambda x, y: x.data() < y.data())
 
