@@ -11,5 +11,5 @@ if __name__ == '__main__':
     t = heap.Heap()
     heapsize = 10
     for i in range(10):
-        t.insert(random.randint(1, 20), lambda x, y: x.data() < y.data())
+        t.insert(random.randint(1, 20), lambda x, y: x < y)
 

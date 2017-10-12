@@ -7,7 +7,8 @@ class Heap:
 
     @staticmethod
     def __parent(j):
-        return (j - 1) // 2
+        jone = (j - 1)
+        return jone // 2
 
     @staticmethod
     def __left(j):
@@ -33,7 +34,7 @@ class Heap:
         :param p: the predicate function to evaluate min or max heap
         """
         self.__data.append(n)
-        self.__heapify_up(self.__data[-1], p)
+        self.__heapify_up(self.size() - 1, p)
 
     def __heapify_up(self, i, p):
         """
@@ -43,13 +44,15 @@ class Heap:
 
         """
         parent = Heap.__parent(i)
-
         # If index in question is not root
         # and the projected swap satisfies the respective
         # min or max orientation of the heap
-        if i is not 0 and p(i, parent):
-            self.__swap(i, parent)
-            self.__heapify_up(parent, i)
+
+        if parent > 0:
+            pred = p(i, parent)
+            if pred:
+                self.__swap(i, parent)
+                self.__heapify_up(parent, i)
 
     def dequeue(self):
         """
