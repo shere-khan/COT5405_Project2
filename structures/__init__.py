@@ -7,5 +7,5 @@ if __name__ == '__main__':
     print(graph.GraphTool.is_connected(g))
     graph.GraphTool.print_graph_matrix_sequentially(g)
 
-    t = heap.BinaryTree()
+    t = heap.HeapPriorityQueue()
 
