@@ -2,6 +2,9 @@ class Heap:
     def __init__(self):
         self.__data = []
 
+    def change_val(self, val):
+        self.__data
+
     @staticmethod
     def __parent(j):
         return (j - 1) // 2
