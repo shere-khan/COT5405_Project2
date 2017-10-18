@@ -2,8 +2,8 @@ class Heap:
     def __init__(self):
         self.__data = []
 
-    def change_val(self, val):
-        self.__data
+    def change_key(self, i, p):
+        p(self.__data[i])
 
     @staticmethod
     def __parent(j):
@@ -54,7 +54,7 @@ class Heap:
                 self.__swap(i, parent)
                 self.__heapify_up(parent, p)
 
-    def dequeue(self):
+    def dequeue(self, p):
         """
         Returns the first element of the queue. Internally, the queue must perform heapify down
         :return: first element of queue
@@ -69,7 +69,7 @@ class Heap:
         self.__data = self.__data[:-1]
 
         # lambda predicate < for a min heap
-        self.__heapify_down(0, lambda x, y: x < y)
+        self.__heapify_down(0, p)
 
         return elem
 
@@ -91,3 +91,6 @@ class Heap:
 
     def size(self):
         return len(self.__data)
+
+    def get_list(self):
+        return self.__data

@@ -1,49 +1,63 @@
 import random
 
 
+class Vertex:
+    def __init__(self, vid, x):
+        self.__id = vid
+        self.__data = x
+        self.__discovered = False
+
+    def get_id(self):
+        return self.__id
+
+    def set_id(self, v_id):
+        self.__id = v_id
+
+    def set_discovered(self, val):
+        self.__discovered = val
+
+    def get_discovered(self):
+        return self.__discovered
+
+    def data(self):
+        return self.__data
+
+    def set_data(self, val):
+        self.__data = val
+
+    def __hash__(self):
+        return hash(id(self))
+
+    def __repr__(self):
+        return "id: {} data: {}".format(self.__id, self.__data)
+
+    def __str__(self):
+        return "id: {} data: {}".format(self.__id, self.__data)
+
+    def __eq__(self, other):
+        self.__dict__ == other.__dict__
+
+
+class Edge:
+    def __init__(self, u, v, x):
+        self.__start = u
+        self.__end = v
+        self.__data = x
+
+    def __hash__(self):
+        return hash((self.__start, self.__end))
+
+    def opposite(self, v):
+        return self.__end if v is self.__end else self.__start
+
+    def __repr__(self):
+        return "({}, {}) data: {}".format(self.__start, self.__end, self.__data)
+
+    def __str__(self):
+        return "({}, {}) data: {}".format(self.__start, self.__end, self.__data)
+
+
 class Graph:
-    class Vertex:
-        def __init__(self, vid, x):
-            self.__id = vid
-            self.__data = x
-            self.__discovered = False
-
-        def set_discovered(self, val):
-            self.__discovered = val
-
-        def get_discovered(self):
-            return self.__discovered
-
-        def data(self):
-            return self.__data
-
-        def __hash__(self):
-            return hash(id(self))
-
-        def __repr__(self):
-            return "id: {}".format(self.__id)
-
-        def __str__(self):
-            return "id: {}".format(self.__id)
-
-    class Edge:
-        def __init__(self, u, v, x):
-            self.__start = u
-            self.__end = v
-            self.__data = x
-
-        def __hash__(self):
-            return hash((self.__start, self.__end))
-
-        def opposite(self, v):
-            return self.__end if v is self.__end else self.__start
-
-        def __repr__(self):
-            return "({}, {}) data: {}".format(self.__start, self.__end, self.__data)
-
-        def __str__(self):
-            return "({}, {}) data: {}".format(self.__start, self.__end, self.__data)
-
     def __init__(self, directed=False):
         self.__outgoing = {}
         self.__incoming = {} if directed else self.__outgoing
@@ -51,8 +65,8 @@ class Graph:
     def outgoing(self):
         return self.__outgoing
 
-    def insert_vertex(self, id, x=None):
-        v = Graph.Vertex(id, x)
+    def insert_vertex(self, v_id, x=None):
+        v = Vertex(v_id, x)
         node_map = {v: {}}
         # map[v] = {}
         for u, vmap in self.__outgoing.items():
@@ -68,7 +82,7 @@ class Graph:
         return v
 
     def insert_edge(self, u, v, x=None):
-        e = self.Edge(u, v, x)
+        e = Edge(u, v, x)
         self.__outgoing[u][v] = e
         self.__incoming[v][u] = e
 
