@@ -10,13 +10,13 @@ class Heap:
         jone = (j - 1)
         return jone // 2
 
-    @staticmethod
-    def __left(j):
-        return 2 * j + 1
+    def __left(self, j):
+        left = 2 * j + 1
+        return left if left < self.size() else -1
 
-    @staticmethod
-    def __right(j):
-        return 2 * j + 2
+    def __right(self, j):
+        right = 2 * j + 2
+        return right if right < self.size() else -1
 
     def __swap(self, i, j):
         """
@@ -60,6 +60,9 @@ class Heap:
         :return: first element of queue
 
         """
+        if self.size() == 1:
+            return self.__data.pop(0)
+
         # store element to return
         elem = self.__data[0]
         self.__swap(0, self.size() - 1)
@@ -72,14 +75,14 @@ class Heap:
 
     def __heapify_down(self, i, p):
         n = self.size()
-        left = Heap.__left(i)
-        right = Heap.__right(i)
-        if 2 * i > n:
+        if 2 * (i + 1) > n:
             return
-        if 2 * i + 1 == n:
-            j = self.__data[n - 1]
+        left = self.__left(i)
+        right = self.__right(i)
+        if 2 * (i + 1) == n:
+            j = left
 
-        if 2 * i < n:
+        if 2 * (i + 1) < n:
             j = left if p(self.__data[left], self.__data[right]) else right
 
         if p(self.__data[j], self.__data[i]):
