@@ -24,7 +24,7 @@ class Heap:
         :param j: The second index into the data array to be swapped
 
         """
-        temp = self.__data[i]
+        temp = self.__data[j]
         self.__data[j] = self.__data[i]
         self.__data[i] = temp
 
@@ -48,11 +48,11 @@ class Heap:
         # and the projected swap satisfies the respective
         # min or max orientation of the heap
 
-        if parent > 0:
-            pred = p(i, parent)
+        if i > 0:
+            pred = p(self.__data[i], self.__data[parent])
             if pred:
                 self.__swap(i, parent)
-                self.__heapify_up(parent, i)
+                self.__heapify_up(parent, p)
 
     def dequeue(self):
         """
@@ -63,23 +63,26 @@ class Heap:
         # store element to return
         elem = self.__data[0]
         self.__swap(0, self.size() - 1)
-        self.__data.remove(self.size() - 1)
+        self.__data = self.__data[:-1]
 
+        # lambda predicate < for a min heap
         self.__heapify_down(0, lambda x, y: x < y)
 
         return elem
 
     def __heapify_down(self, i, p):
-        n = self.size() - 1
+        n = self.size()
         left = Heap.__left(i)
         right = Heap.__right(i)
+        if 2 * i > n:
+            return
         if 2 * i + 1 == n:
-            j = self.__data
+            j = self.__data[n - 1]
 
         if 2 * i < n:
             j = left if p(self.__data[left], self.__data[right]) else right
 
-        if p(i, j):
+        if p(self.__data[j], self.__data[i]):
             self.__swap(i, j)
             self.__heapify_down(j, p)
 

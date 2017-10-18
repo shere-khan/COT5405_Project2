@@ -12,11 +12,15 @@ class TestProblem2(unittest.TestCase):
         for i in range(heapsize):
             val = random.randint(1, 20)
             l.append(val)
+            # lambda predicate < for a min heap
             self.h.insert(val, lambda x, y: x < y)
 
         l.sort()
+        r = []
         for i in l:
-            self.assertEqual(self.h.dequeue(), i)
+            r.append(self.h.dequeue())
+
+        self.assertEqual(l, r)
 
 
 if __name__ == '__main__':
