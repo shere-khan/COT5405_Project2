@@ -17,13 +17,9 @@ class Heap:
 
     def __left(self, j):
         return 2 * j + 1
-        # left = 2 * j + 1
-        # return left if left < self.size() else None
 
     def __right(self, j):
         return 2 * j + 2
-        # right = 2 * j + 2
-        # return right if right < self.size() else None
 
     def __swap(self, i, j):
         """
