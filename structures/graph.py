@@ -236,6 +236,9 @@ class GraphTool:
         prev = GraphTool.__dijkstras(g, s)
         shortest = GraphTool.unpack_paths(s, d, prev)
 
+        return shortest
+
+
     @staticmethod
     def unpack_paths(s, d, prev):
         """
@@ -247,6 +250,6 @@ class GraphTool:
         :return: recurses over the dictionary prev and returns a concatenated string of the shortest s-d path
 
         """
-        if prev[d] is s:
-            return "s"
-        return GraphTool.unpack_paths(s, prev[d], prev) + " -> " + prev[d].get_id()
+        if prev[d] is None:
+            return d.get_id()
+        return GraphTool.unpack_paths(s, prev[d], prev) + " -> " + d.get_id()

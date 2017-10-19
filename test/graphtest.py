@@ -7,58 +7,60 @@ from structures import graph
 class TestProblem2(unittest.TestCase):
     def setUp(self):
         self.g = graph.Graph()
-        v_map = {}
+        self.v_map = {}
         for i in string.ascii_uppercase[:9]:
             v = self.g.insert_vertex(i, "oo")
-            v_map[i] = v
+            self.v_map[i] = v
 
         l = []
-        v = self.g.insert_edge(v_map['A'], v_map['B'], 22)
+        v = self.g.insert_edge(self.v_map['A'], self.v_map['B'], 22)
         l.append(v)
-        v = self.g.insert_edge(v_map['A'], v_map['C'], 9)
+        v = self.g.insert_edge(self.v_map['A'], self.v_map['C'], 9)
         l.append(v)
-        v = self.g.insert_edge(v_map['A'], v_map['D'], 12)
-        l.append(v)
-
-        v = self.g.insert_edge(v_map['B'], v_map['C'], 35)
-        l.append(v)
-        v = self.g.insert_edge(v_map['B'], v_map['F'], 36)
-        l.append(v)
-        v = self.g.insert_edge(v_map['B'], v_map['H'], 34)
+        v = self.g.insert_edge(self.v_map['A'], self.v_map['D'], 12)
         l.append(v)
 
-        v = self.g.insert_edge(v_map['C'], v_map['D'], 4)
+        v = self.g.insert_edge(self.v_map['B'], self.v_map['C'], 35)
         l.append(v)
-        v = self.g.insert_edge(v_map['C'], v_map['E'], 65)
+        v = self.g.insert_edge(self.v_map['B'], self.v_map['F'], 36)
         l.append(v)
-        v = self.g.insert_edge(v_map['C'], v_map['F'], 42)
-        l.append(v)
-
-        v = self.g.insert_edge(v_map['D'], v_map['E'], 33)
-        l.append(v)
-        v = self.g.insert_edge(v_map['D'], v_map['I'], 30)
+        v = self.g.insert_edge(self.v_map['B'], self.v_map['H'], 34)
         l.append(v)
 
-        v = self.g.insert_edge(v_map['E'], v_map['F'], 18)
+        v = self.g.insert_edge(self.v_map['C'], self.v_map['D'], 4)
         l.append(v)
-        v = self.g.insert_edge(v_map['E'], v_map['G'], 23)
+        v = self.g.insert_edge(self.v_map['C'], self.v_map['E'], 65)
         l.append(v)
-
-        v = self.g.insert_edge(v_map['F'], v_map['G'], 39)
-        l.append(v)
-        v = self.g.insert_edge(v_map['F'], v_map['H'], 24)
+        v = self.g.insert_edge(self.v_map['C'], self.v_map['F'], 42)
         l.append(v)
 
-        v = self.g.insert_edge(v_map['G'], v_map['H'], 25)
+        v = self.g.insert_edge(self.v_map['D'], self.v_map['E'], 33)
         l.append(v)
-        v = self.g.insert_edge(v_map['G'], v_map['I'], 21)
-        l.append(v)
-
-        v = self.g.insert_edge(v_map['E'], v_map['I'], 19)
+        v = self.g.insert_edge(self.v_map['D'], self.v_map['I'], 30)
         l.append(v)
 
-    def test_dijkstras_algorithm(self):
-        pass
+        v = self.g.insert_edge(self.v_map['E'], self.v_map['F'], 18)
+        l.append(v)
+        v = self.g.insert_edge(self.v_map['E'], self.v_map['G'], 23)
+        l.append(v)
+
+        v = self.g.insert_edge(self.v_map['F'], self.v_map['G'], 39)
+        l.append(v)
+        v = self.g.insert_edge(self.v_map['F'], self.v_map['H'], 24)
+        l.append(v)
+
+        v = self.g.insert_edge(self.v_map['G'], self.v_map['H'], 25)
+        l.append(v)
+        v = self.g.insert_edge(self.v_map['G'], self.v_map['I'], 21)
+        l.append(v)
+
+        v = self.g.insert_edge(self.v_map['E'], self.v_map['I'], 19)
+        l.append(v)
+
+    def test_shortest_path(self):
+        self.g.outgoing()
+        path = graph.GraphTool.shortest_path(self.g, self.v_map['A'], self.v_map['E'])
+        self.assertEqual("A -> B -> C -> D", path)
 
     def test_unpack_paths(self):
         v1 = graph.Vertex('A', 3)
@@ -71,6 +73,7 @@ class TestProblem2(unittest.TestCase):
         path = graph.GraphTool.unpack_paths(v1, v4, prev)
 
         self.assertEqual("A -> B -> C -> D", path)
+
 
 if __name__ == '__main__':
     unittest.main()
