@@ -68,10 +68,9 @@ class TestProblem2(unittest.TestCase):
 
         prev = {v4: v3, v3: v2, v2: v1, v1: None}
 
-        path = graph.GraphTool.unpack_paths(v1, v4)
+        path = graph.GraphTool.unpack_paths(v1, v4, prev)
 
-        self.assertEqual("A -> B -> C -> D")
+        self.assertEqual("A -> B -> C -> D", path)
 
-_
 if __name__ == '__main__':
     unittest.main()
