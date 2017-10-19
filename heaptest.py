@@ -18,12 +18,12 @@ class TestProblem2(unittest.TestCase):
             node = graph.Vertex(i, val)
             l.append(node)
             # lambda predicate < for a min heap
-            self.h.insert(node, self.p)
+            self.h.insert(node)
 
         l.sort(key=lambda x: x.get_data())
         r = []
         for i in range(len(l)):
-            v1 = self.h.dequeue(self.p)
+            v1 = self.h.dequeue()
             v2 = l[i]
             self.assertEqual(v1.get_data(), v2.get_data())
 
@@ -93,7 +93,7 @@ class TestProblem2(unittest.TestCase):
              graph.Vertex(5, 7), graph.Vertex(6, 29), graph.Vertex(7, 13)]
         for i in l:
             # lambda predicate < for a min heap
-            self.h.insert()
+            self.h.insert(i)
 
         self.h.change_key(3, lambda x: x.set_data(1))
         l.sort(key=lambda x: x.get_data())
@@ -183,7 +183,6 @@ class TestProblem2(unittest.TestCase):
         l.sort(key=lambda y: y.get_data())
         h = []
         for i in range(self.h.size()):
-            #lambda x, y: x.get_data() < y.get_data()
             r = self.h.dequeue()
             h.append(r)
 
