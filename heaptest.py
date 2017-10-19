@@ -1,4 +1,5 @@
 import random
+import string
 import unittest
 
 from structures import heap, graph
@@ -9,6 +10,46 @@ class TestProblem2(unittest.TestCase):
         self.h = heap.Heap()
         self.p = lambda x, y: x.data() < y.data()
 
+        g = graph.Graph()
+        v_map = {}
+        for i in string.ascii_uppercase[:9]:
+            v = g.insert_vertex(i, "oo")
+            v_map[i] = v
+
+        # A-edges
+        g.insert_edge(v_map['A'], v_map['B'], 22)
+        g.insert_edge(v_map['A'], v_map['C'], 9)
+        g.insert_edge(v_map['A'], v_map['D'], 12)
+
+        # B-edges
+        g.insert_edge(v_map['B'], v_map['C'], 35)
+        g.insert_edge(v_map['B'], v_map['F'], 36)
+        g.insert_edge(v_map['B'], v_map['H'], 34)
+
+        # C-edges
+        g.insert_edge(v_map['C'], v_map['D'], 4)
+        g.insert_edge(v_map['C'], v_map['E'], 65)
+        g.insert_edge(v_map['C'], v_map['F'], 42)
+
+        # D-edges
+        g.insert_edge(v_map['D'], v_map['E'], 33)
+        g.insert_edge(v_map['D'], v_map['I'], 30)
+
+        # E-edges
+        g.insert_edge(v_map['E'], v_map['F'], 18)
+        g.insert_edge(v_map['E'], v_map['G'], 23)
+
+        # F-edges
+        g.insert_edge(v_map['F'], v_map['G'], 39)
+        g.insert_edge(v_map['F'], v_map['H'], 24)
+
+        # G-edges
+        g.insert_edge(v_map['G'], v_map['H'], 25)
+        g.insert_edge(v_map['G'], v_map['I'], 21)
+
+        # H-edges
+
+        # I-edges
     def test_heap_size_one(self):
         pass
 
