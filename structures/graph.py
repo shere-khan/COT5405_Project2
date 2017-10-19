@@ -1,4 +1,5 @@
 import random
+from structures import heap
 
 
 class Vertex:
@@ -19,7 +20,7 @@ class Vertex:
     def get_discovered(self):
         return self.__discovered
 
-    def data(self):
+    def get_data(self):
         return self.__data
 
     def set_data(self, val):
@@ -35,7 +36,7 @@ class Vertex:
         return "id: {} data: {}".format(self.__id, self.__data)
 
     def __eq__(self, other):
-        return self.data() == other.data() and self.get_id() == other.get_id()
+        return self.get_data() == other.get_data() and self.get_id() == other.get_id()
 
 
 class Edge:
@@ -119,6 +120,12 @@ class Graph:
                     l.add(edge)
         return list(l)
 
+    def get_all_vertices(self):
+        l = set()
+        for u in self.__outgoing.items():
+            l.add(u[0])
+        return list(l)
+
 
 class GraphTool:
     @staticmethod
@@ -196,13 +203,22 @@ class GraphTool:
 
         """
         prev = {}
+        visited = {}
         for u, vmap in g.outgoing().items():
             prev[u] = None
-
-        s.data(0)
-        Q = [s]
-        # while Q:
-        #     u =
+            visited[u] = False
+            u.dist = 'oo'
+        s.dist = 'oo'
+        q = heap.Heap()
+        q.insert(s)
+        while q:
+            u = q.pop(0)
+            visited[u] = True
+            for v in g.adjacent_edges(u):
+                alt = u.get_data() + g.outgoing()[u][v]
+                if alt < v.get_data() or v.get_data() == 'oo' and not visited[v]:
+                    v.set_data(alt)
+                    prev[v] = q.append(v)
 
     @staticmethod
     def relax_node():
