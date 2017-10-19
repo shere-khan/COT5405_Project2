@@ -2,21 +2,28 @@ class Heap:
     def __init__(self):
         self.__data = []
 
-    def change_key(self, i, p):
-        p(self.__data[i])
+    def size(self):
+        return len(self.__data)
 
-    @staticmethod
-    def __parent(j):
+    def __has_left(self, i):
+        return self.__left(i) < self.size()
+
+    def __has_right(self, i):
+        return self.__right(i) < self.size()
+
+    def __parent(self, j):
         jone = (j - 1)
         return jone // 2
 
     def __left(self, j):
-        left = 2 * j + 1
-        return left if left < self.size() else None
+        return 2 * j + 1
+        # left = 2 * j + 1
+        # return left if left < self.size() else None
 
     def __right(self, j):
-        right = 2 * j + 2
-        return right if right < self.size() else None
+        return 2 * j + 2
+        # right = 2 * j + 2
+        # return right if right < self.size() else None
 
     def __swap(self, i, j):
         """
@@ -43,14 +50,13 @@ class Heap:
         :param p: the predicate function to evaluate min or max heap
 
         """
-        parent = Heap.__parent(i)
+        parent = self.__parent(i)
         # If index in question is not root
         # and the projected swap satisfies the respective
         # min or max orientation of the heap
 
         if i > 0:
-            pred = p(self.__data[i], self.__data[parent])
-            if pred:
+            if p(self.__data[i], self.__data[parent]):
                 self.__swap(i, parent)
                 self.__heapify_up(parent, p)
 
@@ -75,22 +81,23 @@ class Heap:
 
     def __heapify_down(self, i, p):
         n = self.size()
-        if 2 * (i + 1) > n:
-            return
-        left = self.__left(i)
-        right = self.__right(i)
-        if 2 * (i + 1) == n:
-            j = left
+        if self.__has_left(i):
+            left = self.__left(i)
+            if self.__has_right(i):
+                right = self.__right(i)
+                j = left if p(self.__data[left], self.__data[right]) else right
+            else:
+                j = left
+            if p(self.__data[j], self.__data[i]):
+                self.__swap(i, j)
+                self.__heapify_down(j, p)
 
-        if 2 * (i + 1) < n:
-            j = left if p(self.__data[left], self.__data[right]) else right
-
-        if p(self.__data[j], self.__data[i]):
-            self.__swap(i, j)
-            self.__heapify_down(j, p)
-
-    def size(self):
-        return len(self.__data)
-
-    def get_list(self):
-        return self.__data
+    def change_key(self, i, f, p):
+        n = self.size()
+        if n > 1:
+            f(self.__data[i])
+            # Otherwise i has a parent.
+            # We try Heapify-Up
+            self.__heapify_up(i, p)
+            # Then we try Heapify-Down
+            self.__heapify_down(i, p)
