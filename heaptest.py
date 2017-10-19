@@ -48,8 +48,8 @@ class TestProblem2(unittest.TestCase):
         g.insert_edge(v_map['G'], v_map['I'], 21)
 
         # H-edges
+        g.insert_edge(v_map['E'], v_map['I'], 19)
 
-        # I-edges
     def test_heap_size_one(self):
         pass
 
