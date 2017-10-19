@@ -34,12 +34,6 @@ class Vertex:
     def __str__(self):
         return "id: {} data: {}".format(self.__id, self.__data)
 
-    def get_id(self):
-        return self.__id
-
-    def set_id(self, v_id):
-        self.__id = v_id
-
     def __eq__(self, other):
         return self.data() == other.data() and self.get_id() == other.get_id()
 
