@@ -1,6 +1,7 @@
 class Heap:
-    def __init__(self):
+    def __init__(self, order):
         self.__data = []
+        self.__order = order
 
     def size(self):
         return len(self.__data)

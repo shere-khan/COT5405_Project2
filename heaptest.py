@@ -7,8 +7,8 @@ from structures import heap, graph
 
 class TestProblem2(unittest.TestCase):
     def setUp(self):
-        self.h = heap.Heap()
         self.p = lambda x, y: x.get_data() < y.get_data()
+        self.h = heap.Heap(self.p)
 
     def test_insert(self):
         heapsize = 10

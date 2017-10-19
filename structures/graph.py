@@ -209,7 +209,8 @@ class GraphTool:
             visited[u] = False
             u.dist = 'oo'
         s.dist = 'oo'
-        q = heap.Heap()
+        heap_order = lambda x, y: x.get_data() < y.get_data()
+        q = heap.Heap(heap_order)
         q.insert(s)
         while q:
             u = q.pop(0)
