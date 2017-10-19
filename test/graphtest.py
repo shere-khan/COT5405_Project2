@@ -60,7 +60,7 @@ class TestProblem2(unittest.TestCase):
     def test_shortest_path(self):
         self.g.outgoing()
         path = graph.GraphTool.shortest_path(self.g, self.v_map['A'], self.v_map['E'])
-        self.assertEqual("A -> B -> C -> D", path)
+        self.assertEqual("A -> D -> E", path)
 
     def test_unpack_paths(self):
         v1 = graph.Vertex('A', 3)

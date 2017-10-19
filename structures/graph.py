@@ -106,7 +106,16 @@ class Graph:
 
     def adjacent_edges(self, v):
         for edge in self.__outgoing[v].values():
-            yield edge
+            if edge:
+                yield edge
+
+    def adjacent_nodes(self, v):
+        l = []
+        for u, edge in self.__outgoing[v].items():
+            if edge:
+                l.append(u)
+
+        return l
 
     def get_all_edges(self):
         for u, vmap in self.__outgoing.items():
@@ -208,18 +217,22 @@ class GraphTool:
         for u, vmap in g.outgoing().items():
             prev[u] = None
             visited[u] = False
-            u.dist = 'oo'
-        s.dist = 'oo'
+            u.set_data('oo')
+        s.set_data(0)
         q = heap.Heap(lambda x, y: x.get_data() < y.get_data())
         q.insert(s)
-        while q:
+        while q.size():
             u = q.dequeue()
             visited[u] = True
-            for v in g.adjacent_edges(u):
-                alt = u.get_data() + g.outgoing()[u][v]
-                if alt < v.get_data() or v.get_data() == 'oo' and not visited[v]:
+            adj = g.adjacent_nodes(u)
+            for v in adj:
+                node = g.outgoing()[u][v]
+                d = node.get_data()
+                alt = u.get_data() + d
+                if v.get_data() == 'oo' or alt < v.get_data() and not visited[v]:
                     v.set_data(alt)
-                    prev[v] = q.insert(v)
+                    prev[v] = u
+                    q.insert(v)
 
         return prev
 
