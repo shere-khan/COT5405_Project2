@@ -112,12 +112,12 @@ class Graph:
                 yield edge
 
     def get_all_edges_list(self):
-        l = []
+        l = set()
         for u, vmap in self.__outgoing.items():
             for v, edge in vmap.items():
                 if edge:
-                    l.append(edge)
-        return l
+                    l.add(edge)
+        return list(l)
 
 
 class GraphTool:

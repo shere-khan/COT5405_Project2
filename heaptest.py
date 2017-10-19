@@ -176,17 +176,17 @@ class TestProblem2(unittest.TestCase):
         v = self.g.insert_edge(v_map['E'], v_map['I'], 19)
         l.append(v)
 
-        # for e in self.g.get_all_edges():
         for e in self.g.get_all_edges_list():
             if e:
                 self.h.insert(e, lambda x, y: x.get_data() < y.get_data())
 
         l.sort(key=lambda y: y.get_data())
+        h = []
         for i in range(self.h.size()):
             r = self.h.dequeue(lambda x, y: x.get_data() < y.get_data())
-            s = l[i]
-            self.assertEqual(r, s)
+            h.append(r)
 
+        self.assertEqual(h, l)
 
 if __name__ == '__main__':
     unittest.main()
