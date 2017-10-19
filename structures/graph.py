@@ -209,17 +209,16 @@ class GraphTool:
             visited[u] = False
             u.dist = 'oo'
         s.dist = 'oo'
-        heap_order = lambda x, y: x.get_data() < y.get_data()
-        q = heap.Heap(heap_order)
+        q = heap.Heap(lambda x, y: x.get_data() < y.get_data())
         q.insert(s)
         while q:
-            u = q.pop(0)
+            u = q.dequeue()
             visited[u] = True
             for v in g.adjacent_edges(u):
                 alt = u.get_data() + g.outgoing()[u][v]
                 if alt < v.get_data() or v.get_data() == 'oo' and not visited[v]:
                     v.set_data(alt)
-                    prev[v] = q.append(v)
+                    prev[v] = q.insert(v)
 
     @staticmethod
     def relax_node():
