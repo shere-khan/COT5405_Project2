@@ -1,4 +1,5 @@
 import random
+
 from structures import heap
 
 
@@ -195,7 +196,7 @@ class GraphTool:
                 print(u, v, e)
 
     @staticmethod
-    def dijkstras(g, s):
+    def __dijkstras(g, s):
         """
         :param g: graph
         :param s: source node
@@ -220,6 +221,32 @@ class GraphTool:
                     v.set_data(alt)
                     prev[v] = q.insert(v)
 
+        return prev
+
     @staticmethod
-    def relax_node():
-        pass
+    def shortest_path(g, s, d):
+        """
+
+        :param g: graph
+        :param s: source node
+        :param d: destination node
+        :return: returns string representing the shortest s-d path
+        """
+
+        prev = GraphTool.__dijkstras(g, s)
+        shortest = GraphTool.unpack_paths(s, d, prev)
+
+    @staticmethod
+    def unpack_paths(s, d, prev):
+        """
+
+        :param g: graph
+        :param s: source node
+        :param prev: the array representing shortest paths. The key is a node u, the value is the neighboring node v
+        such that the weight of edge (u,v) is the smallest out of all possible neighbors v
+        :return: recurses over the dictionary prev and returns a concatenated string of the shortest s-d path
+
+        """
+        if prev[d] is s:
+            return "s"
+        return GraphTool.unpack_paths(s, prev[d], prev) + " -> " + prev[d].get_id()
