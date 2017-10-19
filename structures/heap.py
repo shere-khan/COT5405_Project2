@@ -90,7 +90,9 @@ class Heap:
 
     def change_key(self, i, f, p):
         n = self.size()
-        if n > 1:
+        if n == 1:
+            f(self.__data[i])
+        elif n > 1:
             f(self.__data[i])
             # Otherwise i has a parent.
             # We try Heapify-Up

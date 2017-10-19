@@ -1,4 +1,6 @@
-import unittest, random
+import random
+import unittest
+
 from structures import heap, graph
 
 
@@ -118,7 +120,11 @@ class TestProblem2(unittest.TestCase):
             self.assertEqual(v1.data(), v2.data())
 
     def test_change_key_list_of_one(self):
-        pass
+        v = graph.Vertex(0, 3)
+        self.h.insert(v, self.p)
+        self.h.change_key(0, lambda x: x.set_data(32), self.p)
+        x = self.h.dequeue(self.p)
+        self.assertEqual(graph.Vertex(0, 32), x)
 
 
 if __name__ == '__main__':
