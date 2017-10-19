@@ -10,49 +10,6 @@ class TestProblem2(unittest.TestCase):
         self.h = heap.Heap()
         self.p = lambda x, y: x.data() < y.data()
 
-        g = graph.Graph()
-        v_map = {}
-        for i in string.ascii_uppercase[:9]:
-            v = g.insert_vertex(i, "oo")
-            v_map[i] = v
-
-        # A-edges
-        g.insert_edge(v_map['A'], v_map['B'], 22)
-        g.insert_edge(v_map['A'], v_map['C'], 9)
-        g.insert_edge(v_map['A'], v_map['D'], 12)
-
-        # B-edges
-        g.insert_edge(v_map['B'], v_map['C'], 35)
-        g.insert_edge(v_map['B'], v_map['F'], 36)
-        g.insert_edge(v_map['B'], v_map['H'], 34)
-
-        # C-edges
-        g.insert_edge(v_map['C'], v_map['D'], 4)
-        g.insert_edge(v_map['C'], v_map['E'], 65)
-        g.insert_edge(v_map['C'], v_map['F'], 42)
-
-        # D-edges
-        g.insert_edge(v_map['D'], v_map['E'], 33)
-        g.insert_edge(v_map['D'], v_map['I'], 30)
-
-        # E-edges
-        g.insert_edge(v_map['E'], v_map['F'], 18)
-        g.insert_edge(v_map['E'], v_map['G'], 23)
-
-        # F-edges
-        g.insert_edge(v_map['F'], v_map['G'], 39)
-        g.insert_edge(v_map['F'], v_map['H'], 24)
-
-        # G-edges
-        g.insert_edge(v_map['G'], v_map['H'], 25)
-        g.insert_edge(v_map['G'], v_map['I'], 21)
-
-        # H-edges
-        g.insert_edge(v_map['E'], v_map['I'], 19)
-
-    def test_heap_size_one(self):
-        pass
-
     def test_insert(self):
         heapsize = 10
         l = []
@@ -166,6 +123,69 @@ class TestProblem2(unittest.TestCase):
         self.h.change_key(0, lambda x: x.set_data(32), self.p)
         x = self.h.dequeue(self.p)
         self.assertEqual(graph.Vertex(0, 32), x)
+
+    def test_edge_sort_on_project_graph(self):
+        self.g = graph.Graph()
+        v_map = {}
+        for i in string.ascii_uppercase[:9]:
+            v = self.g.insert_vertex(i, "oo")
+            v_map[i] = v
+
+        l = []
+        v = self.g.insert_edge(v_map['A'], v_map['B'], 22)
+        l.append(v)
+        v = self.g.insert_edge(v_map['A'], v_map['C'], 9)
+        l.append(v)
+        v = self.g.insert_edge(v_map['A'], v_map['D'], 12)
+        l.append(v)
+
+        v = self.g.insert_edge(v_map['B'], v_map['C'], 35)
+        l.append(v)
+        v = self.g.insert_edge(v_map['B'], v_map['F'], 36)
+        l.append(v)
+        v = self.g.insert_edge(v_map['B'], v_map['H'], 34)
+        l.append(v)
+
+        v = self.g.insert_edge(v_map['C'], v_map['D'], 4)
+        l.append(v)
+        v = self.g.insert_edge(v_map['C'], v_map['E'], 65)
+        l.append(v)
+        v = self.g.insert_edge(v_map['C'], v_map['F'], 42)
+        l.append(v)
+
+        v = self.g.insert_edge(v_map['D'], v_map['E'], 33)
+        l.append(v)
+        v = self.g.insert_edge(v_map['D'], v_map['I'], 30)
+        l.append(v)
+
+        v = self.g.insert_edge(v_map['E'], v_map['F'], 18)
+        l.append(v)
+        v = self.g.insert_edge(v_map['E'], v_map['G'], 23)
+        l.append(v)
+
+        v = self.g.insert_edge(v_map['F'], v_map['G'], 39)
+        l.append(v)
+        v = self.g.insert_edge(v_map['F'], v_map['H'], 24)
+        l.append(v)
+
+        v = self.g.insert_edge(v_map['G'], v_map['H'], 25)
+        l.append(v)
+        v = self.g.insert_edge(v_map['G'], v_map['I'], 21)
+        l.append(v)
+
+        v = self.g.insert_edge(v_map['E'], v_map['I'], 19)
+        l.append(v)
+
+        # for e in self.g.get_all_edges():
+        for e in self.g.get_all_edges_list():
+            if e:
+                self.h.insert(e, lambda x, y: x.get_data() < y.get_data())
+
+        l.sort(key=lambda y: y.get_data())
+        for i in range(self.h.size()):
+            r = self.h.dequeue(lambda x, y: x.get_data() < y.get_data())
+            s = l[i]
+            self.assertEqual(r, s)
 
 
 if __name__ == '__main__':

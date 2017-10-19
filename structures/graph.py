@@ -56,6 +56,20 @@ class Edge:
     def __str__(self):
         return "({}, {}) data: {}".format(self.__start, self.__end, self.__data)
 
+    def get_start(self):
+        return self.__start
+
+    def get_end(self):
+        return self.__end
+
+    def get_data(self):
+        return self.__data
+
+    def __eq__(self, other):
+        return (self.__start == other.get_start()) \
+               and (self.get_end() == other.get_end()) \
+               and (self.__data == other.get_data())
+
 
 class Graph:
     def __init__(self, directed=False):
@@ -86,9 +100,24 @@ class Graph:
         self.__outgoing[u][v] = e
         self.__incoming[v][u] = e
 
+        return e
+
     def adjacent_edges(self, v):
         for edge in self.__outgoing[v].values():
             yield edge
+
+    def get_all_edges(self):
+        for u, vmap in self.__outgoing.items():
+            for v, edge in vmap.items():
+                yield edge
+
+    def get_all_edges_list(self):
+        l = []
+        for u, vmap in self.__outgoing.items():
+            for v, edge in vmap.items():
+                if edge:
+                    l.append(edge)
+        return l
 
 
 class GraphTool:
