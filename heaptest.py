@@ -33,12 +33,12 @@ class TestProblem2(unittest.TestCase):
              graph.Vertex(5, 7), graph.Vertex(6, 29), graph.Vertex(7, 13)]
         for i in l:
             # lambda predicate < for a min heap
-            self.h.insert(i, self.p)
+            self.h.insert(i)
 
-        self.h.change_key(2, lambda x: x.set_data(8), self.p)
+        self.h.change_key(2, lambda x: x.set_data(8))
         l.sort(key=lambda x: x.get_data())
         for i in range(len(l)):
-            v1 = self.h.dequeue(self.p)
+            v1 = self.h.dequeue()
             v2 = l[i]
             self.assertEqual(v1.get_data(), v2.get_data())
 
@@ -48,12 +48,12 @@ class TestProblem2(unittest.TestCase):
              graph.Vertex(5, 7), graph.Vertex(6, 29), graph.Vertex(7, 13)]
         for i in l:
             # lambda predicate < for a min heap
-            self.h.insert(i, self.p)
+            self.h.insert(i)
 
-        self.h.change_key(2, lambda x: x.set_data(1), self.p)
+        self.h.change_key(2, lambda x: x.set_data(1))
         l.sort(key=lambda x: x.get_data())
         for i in range(len(l)):
-            v1 = self.h.dequeue(self.p)
+            v1 = self.h.dequeue()
             v2 = l[i]
             self.assertEqual(v1.get_data(), v2.get_data())
 
@@ -63,12 +63,12 @@ class TestProblem2(unittest.TestCase):
              graph.Vertex(5, 7), graph.Vertex(6, 29), graph.Vertex(7, 13)]
         for i in l:
             # lambda predicate < for a min heap
-            self.h.insert(i, self.p)
+            self.h.insert(i)
 
-        self.h.change_key(0, lambda x: x.set_data(32), self.p)
+        self.h.change_key(0, lambda x: x.set_data(32))
         l.sort(key=lambda x: x.get_data())
         for i in range(len(l)):
-            v1 = self.h.dequeue(self.p)
+            v1 = self.h.dequeue()
             v2 = l[i]
             self.assertEqual(v1.get_data(), v2.get_data())
 
@@ -78,12 +78,12 @@ class TestProblem2(unittest.TestCase):
              graph.Vertex(5, 7), graph.Vertex(6, 29), graph.Vertex(7, 13)]
         for i in l:
             # lambda predicate < for a min heap
-            self.h.insert(i, self.p)
+            self.h.insert(i)
 
-        self.h.change_key(0, lambda x: x.set_data(1), self.p)
+        self.h.change_key(0, lambda x: x.set_data(1))
         l.sort(key=lambda x: x.get_data())
         for i in range(len(l)):
-            v1 = self.h.dequeue(self.p)
+            v1 = self.h.dequeue()
             v2 = l[i]
             self.assertEqual(v1.get_data(), v2.get_data())
 
@@ -93,12 +93,12 @@ class TestProblem2(unittest.TestCase):
              graph.Vertex(5, 7), graph.Vertex(6, 29), graph.Vertex(7, 13)]
         for i in l:
             # lambda predicate < for a min heap
-            self.h.insert(i, self.p)
+            self.h.insert()
 
-        self.h.change_key(3, lambda x: x.set_data(1), self.p)
+        self.h.change_key(3, lambda x: x.set_data(1))
         l.sort(key=lambda x: x.get_data())
         for i in range(len(l)):
-            v1 = self.h.dequeue(self.p)
+            v1 = self.h.dequeue()
             v2 = l[i]
             self.assertEqual(v1.get_data(), v2.get_data())
 
@@ -108,20 +108,20 @@ class TestProblem2(unittest.TestCase):
              graph.Vertex(5, 7), graph.Vertex(6, 29), graph.Vertex(7, 13)]
         for i in l:
             # lambda predicate < for a min heap
-            self.h.insert(i, self.p)
+            self.h.insert(i)
 
-        self.h.change_key(3, lambda x: x.set_data(32), self.p)
+        self.h.change_key(3, lambda x: x.set_data(32))
         l.sort(key=lambda x: x.get_data())
         for i in range(len(l)):
-            v1 = self.h.dequeue(self.p)
+            v1 = self.h.dequeue()
             v2 = l[i]
             self.assertEqual(v1.get_data(), v2.get_data())
 
     def test_change_key_list_of_one(self):
         v = graph.Vertex(0, 3)
-        self.h.insert(v, self.p)
-        self.h.change_key(0, lambda x: x.set_data(32), self.p)
-        x = self.h.dequeue(self.p)
+        self.h.insert(v)
+        self.h.change_key(0, lambda x: x.set_data(32))
+        x = self.h.dequeue()
         self.assertEqual(graph.Vertex(0, 32), x)
 
     def test_edge_sort_on_project_graph(self):
@@ -178,12 +178,13 @@ class TestProblem2(unittest.TestCase):
 
         for e in self.g.get_all_edges_list():
             if e:
-                self.h.insert(e, lambda x, y: x.get_data() < y.get_data())
+                self.h.insert(e)
 
         l.sort(key=lambda y: y.get_data())
         h = []
         for i in range(self.h.size()):
-            r = self.h.dequeue(lambda x, y: x.get_data() < y.get_data())
+            #lambda x, y: x.get_data() < y.get_data()
+            r = self.h.dequeue()
             h.append(r)
 
         self.assertEqual(h, l)

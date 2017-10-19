@@ -32,19 +32,17 @@ class Heap:
         self.__data[j] = self.__data[i]
         self.__data[i] = temp
 
-    def insert(self, n, p):
+    def insert(self, n):
         """
         :param n: element to be inserted
-        :param p: the predicate function to evaluate min or max heap
         """
         self.__data.append(n)
-        self.__heapify_up(self.size() - 1, p)
+        self.__heapify_up(self.size() - 1)
 
-    def __heapify_up(self, i, p):
+    def __heapify_up(self, i):
         """
 
         :param i: The index into the data array that needs to be corrected
-        :param p: the predicate function to evaluate min or max heap
 
         """
         parent = self.__parent(i)
@@ -53,11 +51,11 @@ class Heap:
         # min or max orientation of the heap
 
         if i > 0:
-            if p(self.__data[i], self.__data[parent]):
+            if self.__order(self.__data[i], self.__data[parent]):
                 self.__swap(i, parent)
-                self.__heapify_up(parent, p)
+                self.__heapify_up(parent)
 
-    def dequeue(self, p):
+    def dequeue(self):
         """
         Returns the first element of the queue. Internally, the queue must perform heapify down
         :return: first element of queue
@@ -72,24 +70,23 @@ class Heap:
         self.__data = self.__data[:-1]
 
         # lambda predicate < for a min heap
-        self.__heapify_down(0, p)
+        self.__heapify_down(0)
 
         return elem
 
-    def __heapify_down(self, i, p):
-        n = self.size()
+    def __heapify_down(self, i):
         if self.__has_left(i):
             left = self.__left(i)
             if self.__has_right(i):
                 right = self.__right(i)
-                j = left if p(self.__data[left], self.__data[right]) else right
+                j = left if self.__order(self.__data[left], self.__data[right]) else right
             else:
                 j = left
-            if p(self.__data[j], self.__data[i]):
+            if self.__order(self.__data[j], self.__data[i]):
                 self.__swap(i, j)
-                self.__heapify_down(j, p)
+                self.__heapify_down(j)
 
-    def change_key(self, i, f, p):
+    def change_key(self, i, f):
         n = self.size()
         if n == 1:
             f(self.__data[i])
@@ -97,6 +94,6 @@ class Heap:
             f(self.__data[i])
             # Otherwise i has a parent.
             # We try Heapify-Up
-            self.__heapify_up(i, p)
+            self.__heapify_up(i)
             # Then we try Heapify-Down
-            self.__heapify_down(i, p)
+            self.__heapify_down(i)
