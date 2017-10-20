@@ -191,7 +191,6 @@ class GraphTool:
 
         return g
 
-
     @staticmethod
     def create_connected_graph(g, num_nodes, min_conn, max_conn, max_weight, add_edge=0.1):
 
@@ -305,7 +304,6 @@ class GraphTool:
 
         return shortest
 
-
     @staticmethod
     def unpack_paths(s, d, prev):
         """
@@ -320,3 +318,25 @@ class GraphTool:
         if prev[d] is None:
             return d.get_id()
         return GraphTool.unpack_paths(s, prev[d], prev) + " -> " + d.get_id()
+
+
+class UnionFind:
+    class Node:
+        def __init__(self):
+            self.parent = None
+            self.id = None
+
+    def __init__(self):
+        self.data = {}
+
+    def __find(self, a, l):
+        pass
+
+    def find(self, a):
+        pass
+
+    def join(self, a):
+        pass
+
+    def make_set(self, a):
+        return

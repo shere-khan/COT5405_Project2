@@ -1,5 +1,4 @@
 import random
-import string
 import unittest
 
 from structures import heap, graph
@@ -141,6 +140,7 @@ class TestProblem2(unittest.TestCase):
             h.append(r)
 
         self.assertEqual(h, l)
+
 
 if __name__ == '__main__':
     unittest.main()
