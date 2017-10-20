@@ -1,4 +1,5 @@
 import random
+import string
 
 from structures import heap
 
@@ -138,6 +139,59 @@ class Graph:
 
 
 class GraphTool:
+    @staticmethod
+    def create_hardcoded_graph(g, v_map, l):
+        for i in string.ascii_uppercase[:9]:
+            v = g.insert_vertex(i, "oo")
+            v_map[i] = v
+
+        v = g.insert_edge(v_map['A'], v_map['B'], 22)
+        l.append(v)
+        v = g.insert_edge(v_map['A'], v_map['C'], 9)
+        l.append(v)
+        v = g.insert_edge(v_map['A'], v_map['D'], 12)
+        l.append(v)
+
+        v = g.insert_edge(v_map['B'], v_map['C'], 35)
+        l.append(v)
+        v = g.insert_edge(v_map['B'], v_map['F'], 36)
+        l.append(v)
+        v = g.insert_edge(v_map['B'], v_map['H'], 34)
+        l.append(v)
+
+        v = g.insert_edge(v_map['C'], v_map['D'], 4)
+        l.append(v)
+        v = g.insert_edge(v_map['C'], v_map['E'], 65)
+        l.append(v)
+        v = g.insert_edge(v_map['C'], v_map['F'], 42)
+        l.append(v)
+
+        v = g.insert_edge(v_map['D'], v_map['E'], 33)
+        l.append(v)
+        v = g.insert_edge(v_map['D'], v_map['I'], 30)
+        l.append(v)
+
+        v = g.insert_edge(v_map['E'], v_map['F'], 18)
+        l.append(v)
+        v = g.insert_edge(v_map['E'], v_map['G'], 23)
+        l.append(v)
+
+        v = g.insert_edge(v_map['F'], v_map['G'], 39)
+        l.append(v)
+        v = g.insert_edge(v_map['F'], v_map['H'], 24)
+        l.append(v)
+
+        v = g.insert_edge(v_map['G'], v_map['H'], 25)
+        l.append(v)
+        v = g.insert_edge(v_map['G'], v_map['I'], 21)
+        l.append(v)
+
+        v = g.insert_edge(v_map['E'], v_map['I'], 19)
+        l.append(v)
+
+        return g
+
+
     @staticmethod
     def create_connected_graph(g, num_nodes, min_conn, max_conn, max_weight, add_edge=0.1):
 

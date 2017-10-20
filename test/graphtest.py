@@ -1,4 +1,3 @@
-import string
 import unittest
 
 from structures import graph
@@ -6,56 +5,10 @@ from structures import graph
 
 class TestProblem2(unittest.TestCase):
     def setUp(self):
-        self.g = graph.Graph()
         self.v_map = {}
-        for i in string.ascii_uppercase[:9]:
-            v = self.g.insert_vertex(i, "oo")
-            self.v_map[i] = v
-
-        l = []
-        v = self.g.insert_edge(self.v_map['A'], self.v_map['B'], 22)
-        l.append(v)
-        v = self.g.insert_edge(self.v_map['A'], self.v_map['C'], 9)
-        l.append(v)
-        v = self.g.insert_edge(self.v_map['A'], self.v_map['D'], 12)
-        l.append(v)
-
-        v = self.g.insert_edge(self.v_map['B'], self.v_map['C'], 35)
-        l.append(v)
-        v = self.g.insert_edge(self.v_map['B'], self.v_map['F'], 36)
-        l.append(v)
-        v = self.g.insert_edge(self.v_map['B'], self.v_map['H'], 34)
-        l.append(v)
-
-        v = self.g.insert_edge(self.v_map['C'], self.v_map['D'], 4)
-        l.append(v)
-        v = self.g.insert_edge(self.v_map['C'], self.v_map['E'], 65)
-        l.append(v)
-        v = self.g.insert_edge(self.v_map['C'], self.v_map['F'], 42)
-        l.append(v)
-
-        v = self.g.insert_edge(self.v_map['D'], self.v_map['E'], 33)
-        l.append(v)
-        v = self.g.insert_edge(self.v_map['D'], self.v_map['I'], 30)
-        l.append(v)
-
-        v = self.g.insert_edge(self.v_map['E'], self.v_map['F'], 18)
-        l.append(v)
-        v = self.g.insert_edge(self.v_map['E'], self.v_map['G'], 23)
-        l.append(v)
-
-        v = self.g.insert_edge(self.v_map['F'], self.v_map['G'], 39)
-        l.append(v)
-        v = self.g.insert_edge(self.v_map['F'], self.v_map['H'], 24)
-        l.append(v)
-
-        v = self.g.insert_edge(self.v_map['G'], self.v_map['H'], 25)
-        l.append(v)
-        v = self.g.insert_edge(self.v_map['G'], self.v_map['I'], 21)
-        l.append(v)
-
-        v = self.g.insert_edge(self.v_map['E'], self.v_map['I'], 19)
-        l.append(v)
+        self.g = graph.Graph()
+        self.l = []
+        graph.GraphTool.create_hardcoded_graph(self.g, self.v_map, self.l)
 
     def test_shortest_path(self):
         self.g.outgoing()
