@@ -295,7 +295,18 @@ class GraphTool:
 
     @staticmethod
     def __kruskals(g):
-        pass
+        t = []
+        uf = UnionFind()
+        for v in g.get_all_vertices():
+            uf.make_set(v, lambda x: x.get_data())
+        edges = g.get_all_edges_list()
+        edges.sort(key=lambda x: x.get_weight())
+        for e in edges:
+            u = e.get_start()
+            v = e.get_end()
+            if uf.find_set(u) is not uf.find_set(v):
+                t.append(e)
+                uf.join(u, v)
 
     @staticmethod
     def shortest_path(g, s, d):
@@ -350,11 +361,11 @@ class UnionFind:
     def __init__(self):
         self.__data = {}
 
-    def find(self, o):
+    def find_set(self, o):
         a = self.__data[o]
-        return a if not a.get_parent() else self.__find(a, [a])
+        return a if not a.get_parent() else self.__find_set(a, [a])
 
-    def __find(self, o, l):
+    def __find_set(self, o, l):
         a = self.__data[o]
         if not a.get_parent():
             for n in l:
@@ -363,7 +374,7 @@ class UnionFind:
             return a
         else:
             l.append(a)
-            self.__find(a.get_parent(), l)
+            self.__find_set(a.get_parent(), l)
 
     def join(self, n, o):
         a = self.__data[n]
