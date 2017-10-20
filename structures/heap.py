@@ -13,8 +13,7 @@ class Heap:
         return self.__right(i) < self.size()
 
     def __parent(self, j):
-        jone = (j - 1)
-        return jone // 2
+        return (j - 1) // 2
 
     def __left(self, j):
         return 2 * j + 1
@@ -86,14 +85,16 @@ class Heap:
                 self.__swap(i, j)
                 self.__heapify_down(j)
 
-    def change_key(self, i, f):
+    def __heapify(self, i, f):
         n = self.size()
-        if n == 1:
-            f(self.__data[i])
-        elif n > 1:
+        if n > 1:
             f(self.__data[i])
             # Otherwise i has a parent.
             # We try Heapify-Up
             self.__heapify_up(i)
             # Then we try Heapify-Down
             self.__heapify_down(i)
+
+    def change_key(self, i, f):
+        n = self.size()
+        f(self.__data[i]) if n == 1 else self.__heapify(i, f)
