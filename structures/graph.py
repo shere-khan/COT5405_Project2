@@ -300,7 +300,9 @@ class GraphTool:
         for v in g.get_all_vertices():
             uf.make_set(v, lambda x: x.get_data())
         edges = g.get_all_edges_list()
-        edges.sort(key=lambda x: x.get_weight())
+        h = heap.Heap(lambda x, y: x.get_data() < y.get_data())
+        for e in edges:
+            h.insert(e)
         for e in edges:
             u = e.get_start()
             v = e.get_end()
