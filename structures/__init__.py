@@ -1,15 +1,37 @@
 from structures import graph
 from structures import heap
-import random
 
 if __name__ == '__main__':
-    g = graph.Graph()
-    graph.GraphTool.create_connected_graph(g, 5, 1, 3, 5, 0.1)
-    print(graph.GraphTool.is_connected(g))
-    graph.GraphTool.print_graph_matrix_sequentially(g)
+    f = open('input/input.txt', 'r')
 
-    t = heap.Heap()
-    heapsize = 10
-    for i in range(10):
-        t.insert(random.randint(1, 20), lambda x, y: x < y)
+    read_edges = False
+
+    g = graph.Graph()
+    g.outgoing()
+    vmap = {}
+    edgelist = []
+    while True:
+        c = f.read(1)
+        if not c:
+            print('End of file')
+            break
+
+        if c == '[':
+            vid = f.read(1)
+            u = graph.Vertex(vid, 'oo')
+            vmap[vid] = u
+
+        if c == ':':
+            while c != '\n':
+                c = f.read(1)
+                if c == '(':
+                    vid = f.read(1)
+                    v = graph.Vertex(vid, 'oo')
+                if c == '|':
+                    w = ''
+                    c = f.read(1)
+                    while c != ')':
+                        w+=c
+                        c = f.read(1)
+                    edgelist.append(graph.Edge(u, v, int(w)))
 

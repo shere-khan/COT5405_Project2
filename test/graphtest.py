@@ -20,7 +20,6 @@ class TestProblem2(unittest.TestCase):
         v2 = graph.Vertex('B', 4)
         v3 = graph.Vertex('C', 5)
         v4 = graph.Vertex('D', 2)
-
         prev = {v4: v3, v3: v2, v2: v1, v1: None}
 
         path = graph.GraphTool.unpack_paths(v1, v4, prev)

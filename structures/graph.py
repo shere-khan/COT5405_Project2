@@ -105,6 +105,12 @@ class Graph:
 
         return e
 
+    def insert_edge_object(self, e):
+        self.__outgoing[e.get_start()][e.get_end()] = e
+        self.__incoming[e.get_end()][e.get_start()] = e
+
+        return e
+
     def adjacent_edges(self, v):
         for edge in self.__outgoing[v].values():
             if edge:
