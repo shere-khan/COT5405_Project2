@@ -98,3 +98,9 @@ class Heap:
     def change_key(self, i, f):
         n = self.size()
         f(self.__data[i]) if n == 1 else self.__heapify(i, f)
+
+    def heap_sort(self, l):
+        pass
+
+    def create_tree(self, l):
+        pass
