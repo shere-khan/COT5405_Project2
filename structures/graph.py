@@ -82,6 +82,21 @@ class Graph:
     def outgoing(self):
         return self.__outgoing
 
+    def insert_vertex_object(self, v):
+        node_map = {v: {}}
+        # map[v] = {}
+        for u, vmap in self.__outgoing.items():
+            # initialize the new node's map that has as
+            # keys all the nodes in the current outgoing map
+            node_map[u] = {}
+            # set the new node as a key for itself
+            # set the new node as a key for all the existing nodes
+            vmap[v] = {}
+
+        self.__outgoing[v] = node_map
+
+        return v
+
     def insert_vertex(self, v_id, x=None):
         v = Vertex(v_id, x)
         node_map = {v: {}}
@@ -106,8 +121,10 @@ class Graph:
         return e
 
     def insert_edge_object(self, e):
-        self.__outgoing[e.get_start()][e.get_end()] = e
-        self.__incoming[e.get_end()][e.get_start()] = e
+        u = e.get_start()
+        v = e.get_end()
+        self.__outgoing[u][v] = e
+        self.__incoming[v][u] = e
 
         return e
 

@@ -19,6 +19,7 @@ if __name__ == '__main__':
         if c == '[':
             vid = f.read(1)
             u = graph.Vertex(vid, 'oo')
+            g.insert_vertex_object(u)
             vmap[vid] = u
 
         if c == ':':
@@ -31,7 +32,15 @@ if __name__ == '__main__':
                     w = ''
                     c = f.read(1)
                     while c != ')':
-                        w+=c
+                        w += c
                         c = f.read(1)
                     edgelist.append(graph.Edge(u, v, int(w)))
 
+    # list(map(lambda x: g.insert_edge_object(x), edgelist))
+
+    for e in edgelist:
+        g.insert_edge_object(e)
+
+    mst = graph.GraphTool.mst(g)
+    path = graph.GraphTool.shortest_path(vmap['A'], vmap['E'])
+    print(path)
