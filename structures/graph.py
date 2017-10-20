@@ -322,21 +322,53 @@ class GraphTool:
 
 class UnionFind:
     class Node:
-        def __init__(self):
-            self.parent = None
-            self.id = None
+        def __init__(self, n_id):
+            self.__parent = None
+            self.__level = 0
+            self.__n_id = n_id
+
+        def get_level(self):
+            return self.__level
+
+        def set_parent(self, o):
+            self.__parent = o
+
+        def get_n_id(self):
+            return self.__n_id
+
+        def __eq__(self, other):
+            return self.__n_id == other.get_n_id()
 
     def __init__(self):
-        self.data = {}
+        self.__data = {}
 
-    def __find(self, a, l):
-        pass
+    def find(self, o):
+        a = self.__data[o]
+        return a if not a.get_parent() else self.__find(a, [a])
 
-    def find(self, a):
-        pass
+    def __find(self, o, l):
+        a = self.__data[o]
+        if not a.get_parent():
+            for n in l:
+                n.parent = a
 
-    def join(self, a):
-        pass
+            return a
+        else:
+            l.append(a)
+            self.__find(a.get_parent(), l)
 
-    def make_set(self, a):
-        return
+    def join(self, n, o):
+        a = self.__data[n]
+        b = self.__data[o]
+
+        if a.get_level() < b.get_level():
+            a.set_parent(b)
+            a.set_level(0)
+            b.set_level(b.get_level() + 1)
+        else:  # case if a.level >= b.level
+            b.set_parent(a)
+            b.set_level(0)
+            a.set_level(a.get_level() + 1)
+
+    def make_set(self, a, f):
+        self.__data[a] = self.Node(f(a))
