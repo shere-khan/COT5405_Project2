@@ -186,7 +186,7 @@ class GraphTool:
         v = g.insert_edge(v_map['G'], v_map['I'], 21)
         l.append(v)
 
-        v = g.insert_edge(v_map['E'], v_map['I'], 19)
+        v = g.insert_edge(v_map['H'], v_map['I'], 19)
         l.append(v)
 
         return g
@@ -298,7 +298,7 @@ class GraphTool:
         t = []
         uf = UnionFind()
         for v in g.get_all_vertices():
-            uf.make_set(v, lambda x: x.get_data())
+            uf.make_set(v, lambda x: x.get_id())
         edges = g.get_all_edges_list()
         h = heap.Heap(lambda x, y: x.get_data() < y.get_data())
         list(map(lambda x: h.insert(x), edges))
@@ -368,7 +368,7 @@ class UnionFind:
             return self.__nid
 
         def __eq__(self, other):
-            return self.__nid == other.get_nid()
+            return self.__nid == other.get_nid() and self.__level == other.get_level()
 
     def get_node(self, o):
         return self.__data[o]

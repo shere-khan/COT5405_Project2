@@ -120,7 +120,7 @@ class TestProblem2(unittest.TestCase):
         aprime = uf.find_set(a)
         self.assertEqual(a.get_id(), aprime.get_nid())
 
-    def test_kruskals(self):
+    def test_mst(self):
         mst = graph.GraphTool.mst(self.g)
         self.assertEqual('a', 'a')
 
