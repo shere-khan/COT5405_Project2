@@ -31,10 +31,24 @@ class TestProblem2(unittest.TestCase):
         pass
 
     def test_union_find_join(self):
-        pass
+        uf = graph.UnionFind()
+        for v in self.g.get_all_vertices():
+            uf.make_set(v, lambda x: x.get_id())
+        a = self.v_map['A']
+        b = self.v_map['B']
+        uf.join(a, b)
+        aprime = uf.find_set(a)
+        self.assertEqual('A', aprime.get_nid())
+        bprime = uf.find_set(b)
+        self.assertEqual('A', bprime.get_nid())
 
     def test_union_find_find(self):
-        pass
+        uf = graph.UnionFind()
+        for v in self.g.get_all_vertices():
+            uf.make_set(v, lambda x: x.get_id())
+        a = self.v_map['A']
+        aprime = uf.find_set(a)
+        self.assertEqual(a.get_id(), aprime.get_nid())
 
 
 if __name__ == '__main__':

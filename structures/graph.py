@@ -35,7 +35,7 @@ class Vertex:
         return "id: {} data: {}".format(self.__id, self.__data)
 
     def __str__(self):
-        return "id: {} data: {}".format(self.__id, self.__data)
+       return "id: {} data: {}".format(self.__id, self.__data)
 
     def __eq__(self, other):
         return self.get_data() == other.get_data() and self.get_id() == other.get_id()
@@ -301,8 +301,7 @@ class GraphTool:
             uf.make_set(v, lambda x: x.get_data())
         edges = g.get_all_edges_list()
         h = heap.Heap(lambda x, y: x.get_data() < y.get_data())
-        for e in edges:
-            h.insert(e)
+        list(map(lambda x: h.insert(x), edges))
         for e in edges:
             u = e.get_start()
             v = e.get_end()
@@ -351,10 +350,16 @@ class UnionFind:
         def get_level(self):
             return self.__level
 
+        def set_level(self, lvl):
+            self.__level = lvl
+
         def set_parent(self, o):
             self.__parent = o
 
-        def get_n_id(self):
+        def get_parent(self):
+            return self.__parent
+
+        def get_nid(self):
             return self.__nid
 
         def __eq__(self, other):
@@ -365,13 +370,12 @@ class UnionFind:
 
     def find_set(self, o):
         a = self.__data[o]
-        return a if not a.get_parent() else self.__find_set(a, [a])
+        return a if not a.get_parent() else self.__find_set(a.get_parent(), [a])
 
-    def __find_set(self, o, l):
-        a = self.__data[o]
+    def __find_set(self, a, l):
         if not a.get_parent():
             for n in l:
-                n.parent = a
+                n.set_parent(a)
 
             return a
         else:
