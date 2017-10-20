@@ -302,12 +302,17 @@ class GraphTool:
         edges = g.get_all_edges_list()
         h = heap.Heap(lambda x, y: x.get_data() < y.get_data())
         list(map(lambda x: h.insert(x), edges))
-        for e in edges:
+        for i in range(h.size()):
+            e = h.dequeue()
             u = e.get_start()
             v = e.get_end()
-            if uf.find_set(u) is not uf.find_set(v):
+            u_set = uf.find_set(u)
+            v_set = uf.find_set(v)
+            if u_set is not v_set:
                 t.append(e)
                 uf.join(u, v)
+
+        return t
 
     @staticmethod
     def shortest_path(g, s, d):
