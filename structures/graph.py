@@ -343,7 +343,7 @@ class GraphTool:
 class UnionFind:
     class Node:
         def __init__(self, nid):
-            self.__parent = None
+            self.__parent = self
             self.__level = 0
             self.__nid = nid
 
@@ -365,26 +365,33 @@ class UnionFind:
         def __eq__(self, other):
             return self.__nid == other.get_nid()
 
+    def get_node(self, o):
+        return self.__data[o]
+
     def __init__(self):
         self.__data = {}
 
     def find_set(self, o):
         a = self.__data[o]
-        return a if not a.get_parent() else self.__find_set(a.get_parent(), [a])
+        if a.get_parent() is a:
+            return a
+        else:
+            val = self.__find_set(a.get_parent(), [a])
+            return val
 
     def __find_set(self, a, l):
-        if not a.get_parent():
+        if a.get_parent() is a:
             for n in l:
                 n.set_parent(a)
 
             return a
         else:
             l.append(a)
-            self.__find_set(a.get_parent(), l)
+            return self.__find_set(a.get_parent(), l)
 
     def join(self, n, o):
-        a = self.__data[n]
-        b = self.__data[o]
+        a = self.find_set(n)
+        b = self.find_set(o)
 
         if a.get_level() < b.get_level():
             a.set_parent(b)
