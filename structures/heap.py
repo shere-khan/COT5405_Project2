@@ -100,7 +100,6 @@ class Heap:
         f(self.__data[i]) if n == 1 else self.__heapify(i, f)
 
     def heap_sort(self, l):
-        pass
-
-    def create_tree(self, l):
-        pass
+        #
+        for i in range((self.size() + 1)//2, 0):
+            pass
