@@ -290,6 +290,14 @@ class GraphTool:
         return prev
 
     @staticmethod
+    def mst(g):
+        return GraphTool.__kruskals(g)
+
+    @staticmethod
+    def __kruskals(g):
+        pass
+
+    @staticmethod
     def shortest_path(g, s, d):
         """
 
