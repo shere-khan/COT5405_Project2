@@ -35,7 +35,7 @@ class Vertex:
         return "id: {} data: {}".format(self.__id, self.__data)
 
     def __str__(self):
-       return "id: {} data: {}".format(self.__id, self.__data)
+        return "id: {} data: {}".format(self.__id, self.__data)
 
     def __eq__(self, other):
         return self.get_data() == other.get_data() and self.get_id() == other.get_id()
@@ -69,9 +69,8 @@ class Edge:
         return self.__data
 
     def __eq__(self, other):
-        return (self.__start == other.get_start()) \
-               and (self.get_end() == other.get_end()) \
-               and (self.__data == other.get_data())
+        return (self.__start == other.get_start() and self.get_end() == other.get_end()) \
+               or (self.__start == other.get_end() and self.__end == other.get_start()) and (self.__data == other.get_data())
 
 
 class Graph:
@@ -116,15 +115,18 @@ class Graph:
     def insert_edge(self, u, v, x=None):
         e = Edge(u, v, x)
         self.__outgoing[u][v] = e
-        self.__incoming[v][u] = e
+        # self.__incoming[v][u] = e
 
         return e
 
     def insert_edge_object(self, e):
         u = e.get_start()
         v = e.get_end()
-        self.__outgoing[u][v] = e
-        self.__incoming[v][u] = e
+        try:
+            self.__outgoing[u][v] = e
+            # self.__incoming[v][u] = e
+        except KeyError as er:
+            print('Invalid key')
 
         return e
 
