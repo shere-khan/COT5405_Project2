@@ -27,6 +27,13 @@ class TestProblem2(unittest.TestCase):
 
         self.assertEqual("A -> B -> C -> D", path)
 
+    def test_union_find_make_set(self):
+        pass
 
+    def test_union_find_join(self):
+        pass
+
+    def test_union_find_find(self):
+        pass
 if __name__ == '__main__':
     unittest.main()
