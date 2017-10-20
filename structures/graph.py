@@ -322,10 +322,10 @@ class GraphTool:
 
 class UnionFind:
     class Node:
-        def __init__(self, n_id):
+        def __init__(self, nid):
             self.__parent = None
             self.__level = 0
-            self.__n_id = n_id
+            self.__nid = nid
 
         def get_level(self):
             return self.__level
@@ -334,10 +334,10 @@ class UnionFind:
             self.__parent = o
 
         def get_n_id(self):
-            return self.__n_id
+            return self.__nid
 
         def __eq__(self, other):
-            return self.__n_id == other.get_n_id()
+            return self.__nid == other.get_n_id()
 
     def __init__(self):
         self.__data = {}
