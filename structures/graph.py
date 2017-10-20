@@ -358,7 +358,7 @@ class UnionFind:
             return self.__nid
 
         def __eq__(self, other):
-            return self.__nid == other.get_n_id()
+            return self.__nid == other.get_nid()
 
     def __init__(self):
         self.__data = {}

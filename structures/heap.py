@@ -100,6 +100,12 @@ class Heap:
         f(self.__data[i]) if n == 1 else self.__heapify(i, f)
 
     def heap_sort(self, l):
-        #
+        self.__data = l
         for i in range((self.size() + 1)//2, 0):
-            pass
+            self.__heapify_up(i)
+        r = []
+        for i in range(self.__data):
+            r.append(self.dequeue())
+
+        return r
+
