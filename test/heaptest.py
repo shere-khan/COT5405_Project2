@@ -1,7 +1,8 @@
 import random
 import unittest
 
-from structures import heap, graph
+import graph
+from structures import heap
 
 
 class TestProblem2(unittest.TestCase):

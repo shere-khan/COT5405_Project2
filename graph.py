@@ -1,8 +1,6 @@
 import random
 import string
-
-from structures import heap
-
+import heap
 
 class Vertex:
     def __init__(self, vid, x):
@@ -72,7 +70,8 @@ class Edge:
     def __eq__(self, other):
         print('sdkfj')
         return (self.__start == other.get_start() and self.get_end() == other.get_end()) \
-               or (self.__start == other.get_end() and self.__end == other.get_start()) and (self.__data == other.get_data())
+               or (self.__start == other.get_end() and self.__end == other.get_start()) and (
+        self.__data == other.get_data())
 
 
 class Graph:
@@ -340,6 +339,11 @@ class GraphTool:
                 uf.join(u, v)
 
         return t
+
+    @staticmethod
+    def unpack_kruskal(t):
+        for e in t:
+
 
     @staticmethod
     def shortest_path(g, s, d):

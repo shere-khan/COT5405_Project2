@@ -2,11 +2,10 @@
 
 # sys.path.append('C:\\Users\\Justin\\PycharmProjects\\COT5405_Project2\\structures')
 
-from structures import graph
-from structures import heap
+import graph
 
 if __name__ == '__main__':
-    f = open('input/input2.txt', 'r')
+    f = open('input.txt', 'r')
 
     read_edges = False
 
@@ -17,7 +16,6 @@ if __name__ == '__main__':
     while True:
         c = f.read(1)
         if not c:
-            print('End of file')
             break
 
         if c == '[':
@@ -59,7 +57,11 @@ if __name__ == '__main__':
     for e in edgelist:
         g.insert_edge_object(e)
 
+    print()
+    print("Results of Kruskal's algorithm: ")
     mst = graph.GraphTool.mst(g)
     print(mst)
+    print()
+    print("Results of Dijkstra's algorithm: ")
     path = graph.GraphTool.shortest_path(g, vmap['A'], vmap['E'])
     print(path)

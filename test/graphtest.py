@@ -1,6 +1,6 @@
 import unittest
 
-from structures import graph
+import graph
 
 
 class TestProblem2(unittest.TestCase):
