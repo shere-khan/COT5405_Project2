@@ -1,3 +1,7 @@
+# import sys
+
+# sys.path.append('C:\\Users\\Justin\\PycharmProjects\\COT5405_Project2\\structures')
+
 from structures import graph
 from structures import heap
 
