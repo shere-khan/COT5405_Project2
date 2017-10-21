@@ -59,8 +59,15 @@ if __name__ == '__main__':
 
     print()
     print("Results of Kruskal's algorithm: ")
-    mst = graph.GraphTool.mst(g)
+    mst, w = graph.GraphTool.mst(g)
+    nl, el = graph.GraphTool.unpack_kruskal(mst)
+    print('total weight: ' + str(w))
+    print('Nodes in MST: ')
+    list(map(lambda x: print(x), nl))
+    print('Edges in MST: ')
+    list(map(lambda x: print(x), el))
     print(mst)
+
     print()
     print("Results of Dijkstra's algorithm: ")
     path = graph.GraphTool.shortest_path(g, vmap['A'], vmap['E'])

@@ -1,6 +1,8 @@
 import random
 import string
+
 import heap
+
 
 class Vertex:
     def __init__(self, vid, x):
@@ -68,10 +70,9 @@ class Edge:
         return self.__data
 
     def __eq__(self, other):
-        print('sdkfj')
         return (self.__start == other.get_start() and self.get_end() == other.get_end()) \
                or (self.__start == other.get_end() and self.__end == other.get_start()) and (
-        self.__data == other.get_data())
+            self.__data == other.get_data())
 
 
 class Graph:
@@ -323,6 +324,7 @@ class GraphTool:
     def __kruskals(g):
         t = []
         uf = UnionFind()
+        tot_w = 0
         for v in g.get_all_vertices():
             uf.make_set(v, lambda x: x.get_id())
         edges = g.get_all_edges_list()
@@ -335,15 +337,21 @@ class GraphTool:
             u_set = uf.find_set(u)
             v_set = uf.find_set(v)
             if u_set is not v_set:
+                tot_w += e.get_data()
                 t.append(e)
                 uf.join(u, v)
 
-        return t
+        return t, tot_w
 
     @staticmethod
     def unpack_kruskal(t):
+        nodeset = set()
+        edgeset = set()
         for e in t:
-
+            edgeset.add(e.get_end().get_id() + '-' + e.get_start().get_id())
+            nodeset.add(e.get_end().get_id())
+            nodeset.add(e.get_start().get_id())
+        return list(nodeset), list(edgeset)
 
     @staticmethod
     def shortest_path(g, s, d):
