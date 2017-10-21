@@ -7,6 +7,7 @@ from structures import heap
 class Vertex:
     def __init__(self, vid, x):
         self.__id = vid
+        self.__object_id = id(self)
         self.__data = x
         self.__discovered = False
 
@@ -69,6 +70,7 @@ class Edge:
         return self.__data
 
     def __eq__(self, other):
+        print('sdkfj')
         return (self.__start == other.get_start() and self.get_end() == other.get_end()) \
                or (self.__start == other.get_end() and self.__end == other.get_start()) and (self.__data == other.get_data())
 
