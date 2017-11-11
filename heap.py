@@ -3,6 +3,9 @@ class Heap:
         self.__data = []
         self.__order = order
 
+    def get_data(self):
+        return self.__data
+
     def size(self):
         return len(self.__data)
 

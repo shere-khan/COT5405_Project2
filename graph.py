@@ -330,8 +330,14 @@ class GraphTool:
         edges = g.get_all_edges_list()
         h = heap.Heap(lambda x, y: x.get_data() < y.get_data())
         list(map(lambda x: h.insert(x), edges))
+        print()
+        print("Heap array after heapify:")
+        print(h.get_data())
+        print()
+        print("Heap array after sort:")
         for i in range(h.size()):
             e = h.dequeue()
+            print('{}, '.format(e), end='')
             u = e.get_start()
             v = e.get_end()
             u_set = uf.find_set(u)
@@ -341,6 +347,7 @@ class GraphTool:
                 t.append(e)
                 uf.join(u, v)
 
+        print()
         return t, tot_w
 
     @staticmethod

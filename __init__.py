@@ -1,8 +1,10 @@
 # import sys
+from __future__ import print_function
 
 # sys.path.append('C:\\Users\\Justin\\PycharmProjects\\COT5405_Project2\\structures')
 
 import graph
+import heap
 
 if __name__ == '__main__':
     f = open('input.txt', 'r')
@@ -58,17 +60,22 @@ if __name__ == '__main__':
         g.insert_edge_object(e)
 
     print()
-    print("Results of Kruskal's algorithm: ")
     mst, w = graph.GraphTool.mst(g)
     nl, el = graph.GraphTool.unpack_kruskal(mst)
-    print('total weight: ' + str(w))
+    print()
+    print("Results of Kruskal's algorithm: ")
+    print()
+    print('Total weight in MST: ' + str(w))
     print('Nodes in MST: ')
-    list(map(lambda x: print(x), nl))
+    for x in nl:
+        print(x)
+    print()
     print('Edges in MST: ')
-    list(map(lambda x: print(x), el))
-    print(mst)
+    for x in el:
+        print(x)
 
     print()
     print("Results of Dijkstra's algorithm: ")
     path = graph.GraphTool.shortest_path(g, vmap['A'], vmap['E'])
+
     print(path)
