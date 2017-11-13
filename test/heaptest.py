@@ -128,7 +128,7 @@ class TestProblem2(unittest.TestCase):
         g = graph.Graph()
         v_map = {}
         l = []
-        graph.GraphTool.create_hardcoded_graph(g, v_map, l)
+        graph.GraphTool.create_hardcoded_undirected_graph(g, v_map, l)
 
         for e in g.get_all_edges_list():
             if e:

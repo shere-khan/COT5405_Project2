@@ -83,9 +83,11 @@ class Graph:
     def outgoing(self):
         return self.__outgoing
 
+    def is_directed(self):
+        return self.__incoming is not self.__outgoing
+
     def insert_vertex_object(self, v):
         node_map = {v: {}}
-        # map[v] = {}
         for u, vmap in self.__outgoing.items():
             # initialize the new node's map that has as
             # keys all the nodes in the current outgoing map
@@ -95,13 +97,21 @@ class Graph:
             vmap[v] = {}
 
         self.__outgoing[v] = node_map
+
+        if self.is_directed():
+            for u, vmap in self.__incoming.items():
+                # initialize the new node's map that has as
+                # keys all the nodes in the current outgoing map
+                node_map[u] = {}
+                # set the new node as a key for itself
+                # set the new node as a key for all the existing nodes
+                vmap[v] = {}
 
         return v
 
     def insert_vertex(self, v_id, x=None):
         v = Vertex(v_id, x)
         node_map = {v: {}}
-        # map[v] = {}
         for u, vmap in self.__outgoing.items():
             # initialize the new node's map that has as
             # keys all the nodes in the current outgoing map
@@ -112,12 +122,21 @@ class Graph:
 
         self.__outgoing[v] = node_map
 
+        if self.is_directed():
+            for u, vmap in self.__incoming.items():
+                # initialize the new node's map that has as
+                # keys all the nodes in the current outgoing map
+                node_map[u] = {}
+                # set the new node as a key for itself
+                # set the new node as a key for all the existing nodes
+                vmap[v] = {}
+
         return v
 
     def insert_edge(self, u, v, x=None):
         e = Edge(u, v, x)
         self.__outgoing[u][v] = e
-        # self.__incoming[v][u] = e
+        self.__incoming[v][u] = e
 
         return e
 
@@ -126,20 +145,22 @@ class Graph:
         v = e.get_end()
         try:
             self.__outgoing[u][v] = e
-            # self.__incoming[v][u] = e
+            self.__incoming[v][u] = e
         except KeyError as er:
             print('Invalid key')
 
         return e
 
-    def adjacent_edges(self, v):
-        for edge in self.__outgoing[v].values():
+    def adjacent_edges(self, v, outgoing=True):
+        adj = self.__outgoing if outgoing else self.__incoming
+        for edge in adj[v].values():
             if edge:
                 yield edge
 
-    def adjacent_nodes(self, v):
+    def adjacent_nodes(self, v, outgoing=True):
         l = []
-        for u, edge in self.__outgoing[v].items():
+        adj = self.__outgoing if outgoing else self.__incoming
+        for u, edge in adj[v].items():
             if edge:
                 l.append(u)
 
@@ -167,7 +188,68 @@ class Graph:
 
 class GraphTool:
     @staticmethod
-    def create_hardcoded_graph(g, v_map, l):
+    def dfs(g, s, t, capacity, flow):
+        stk = [s]
+        paths = {s:[]}
+        if s is t:
+            return paths[s]
+        while stk:
+            u = stk.pop()
+            for e in g.adjacent_edges(u):
+                v = e.get_end()
+                if capacity[e] - flow[e] > 0 and v not in paths:
+                    paths[v] = paths[u] + [(u, v)]
+                    print(paths)
+                    if v is t:
+                        return paths[v]
+                    stk.append(v)
+
+
+    @staticmethod
+    def create_hardcoded_maxflow_graph(g, v_map, l):
+        for i in range(1, 9):
+            v = g.insert_vertex(i, "oo")
+            v_map[i] = v
+
+        v = g.insert_edge(v_map[1], v_map[2], 10)
+        l.append(v)
+        v = g.insert_edge(v_map[1], v_map[3], 5)
+        l.append(v)
+        v = g.insert_edge(v_map[1], v_map[4], 15)
+        l.append(v)
+
+        v = g.insert_edge(v_map[2], v_map[5], 9)
+        l.append(v)
+        v = g.insert_edge(v_map[2], v_map[6], 15)
+        l.append(v)
+        v = g.insert_edge(v_map[2], v_map[3], 4)
+        l.append(v)
+
+        v = g.insert_edge(v_map[3], v_map[6], 8)
+        l.append(v)
+        v = g.insert_edge(v_map[3], v_map[4], 4)
+        l.append(v)
+
+        v = g.insert_edge(v_map[4], v_map[7], 30)
+        l.append(v)
+
+        v = g.insert_edge(v_map[5], v_map[8], 10)
+        l.append(v)
+        v = g.insert_edge(v_map[5], v_map[6], 15)
+        l.append(v)
+
+        v = g.insert_edge(v_map[6], v_map[8], 10)
+        l.append(v)
+        v = g.insert_edge(v_map[6], v_map[7], 15)
+        l.append(v)
+
+        v = g.insert_edge(v_map[7], v_map[8], 10)
+        l.append(v)
+        v = g.insert_edge(v_map[7], v_map[3], 6)
+        l.append(v)
+
+    @staticmethod
+    def create_hardcoded_undirected_graph(g, v_map, l):
         for i in string.ascii_uppercase[:9]:
             v = g.insert_vertex(i, "oo")
             v_map[i] = v
@@ -215,8 +297,6 @@ class GraphTool:
 
         v = g.insert_edge(v_map['H'], v_map['I'], 19)
         l.append(v)
-
-        return g
 
     @staticmethod
     def create_connected_graph(g, num_nodes, min_conn, max_conn, max_weight, add_edge=0.1):

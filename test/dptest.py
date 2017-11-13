@@ -6,19 +6,9 @@ class TestProblem2(unittest.TestCase):
     def setUp(self):
         self.dynprog = dp.RNA()
 
-    # def test_alignment_no_pointer(self):
-    #     s1 = 'AACG'
-    #     s2 = 'ACTG'
-    #
-    #     f = lambda x, y: 1 if y == "" or x == "" or x != y else 0
-    #
-    #     align = self.dynprog.alignment_no_pointer(s1, s2, f)
-    #
-    #     print(align[-1][-1])
-
     def test_alignment(self):
         # s1 = 'AACGD'
-        # s2 = 'ACTG'
+        # s2 = 'ACTGY'
         # s1 = 'AACGDXXQQQY'
         # s2 = 'ACTGQXCQY'
 
@@ -29,17 +19,17 @@ class TestProblem2(unittest.TestCase):
 
         align = self.dynprog.alignment(s1, s2, self.cost)
 
-        # print(align[-1][-1])
         r1 = ""
         r2 = ""
         r1, r2 = self.dynprog.unpack_alignment(align, s1, s2, r1, r2)
-        #
-        print(r1)
-        print(r2)
+
+        print('Edit Distance: ' + str(align[-1][-1][0]))
+        print('s1: ' + r1)
+        print('s2: ' + r2)
 
     @staticmethod
     def cost(x, y):
-        if y == x == "":
+        if y == "" or x == "":
             return 1
         if x != y:
             return 2

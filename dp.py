@@ -20,11 +20,6 @@ class RNA:
     def compute_opt(self, i, j, t):
         max(self.secondary_structure(i, j - 1), max())
 
-    def populate_base_no_pointer(self, M, m, n):
-        for i in range(1, n + 1):
-            for j in range(0, m + 1):
-                M.append([i]) if j == 0 else M[i].append(0)
-
     def populate_base(self, M, m, n):
         for i in range(0, n + 1):
             for j in range(0, m + 1):
@@ -36,22 +31,6 @@ class RNA:
                     M.append([(i, (i - 1, j, 'up'))])
                 else:
                     M[i].append((0, None))
-
-    def alignment_no_pointer(self, s1, s2, f):
-        n = len(s1)
-        m = len(s2)
-        M = [[i for i in range(m + 1)]]
-        self.populate_base_no_pointer(M, m, n)
-
-        for i in range(1, n + 1):
-            for j in range(1, m + 1):
-                vals = [M[i - 1][j - 1] + f(s1[i - 1], s2[j - 1]),
-                        M[i - 1][j] + f("", s2[j - 1]),
-                        M[i][j - 1] + f(s1[i - 1], "")]
-                mynn = min(vals)
-                M[i][j] = mynn
-
-        return M
 
     def alignment(self, s1, s2, f):
         n = len(s1)

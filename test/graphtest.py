@@ -6,13 +6,28 @@ import graph
 class TestProblem2(unittest.TestCase):
     def setUp(self):
         self.v_map = {}
-        self.g = graph.Graph()
+        self.undirected_g = graph.Graph()
         self.l = []
-        graph.GraphTool.create_hardcoded_graph(self.g, self.v_map, self.l)
+        graph.GraphTool.create_hardcoded_undirected_graph(self.undirected_g, self.v_map, self.l)
+
+        self.v_map_directed = {}
+        self.directed_g = graph.Graph()
+        graph.GraphTool.create_hardcoded_maxflow_graph(self.directed_g, self.v_map_directed, self.l)
+
+    def test_get_edges_directed_graph(self):
+        edges = self.directed_g.get_all_edges_list()
+
+    def test_dfs_maxflow(self):
+        paths = list()
+        s = self.v_map_directed[1]
+        t = self.v_map_directed[8]
+        # capacity = {self.v_map_directed[1]:10}
+        # flow =
+        graph.GraphTool.dfs(self.directed_g, s, t)
 
     def test_shortest_path(self):
-        self.g.outgoing()
-        path = graph.GraphTool.shortest_path(self.g, self.v_map['A'], self.v_map['E'])
+        self.undirected_g.outgoing()
+        path = graph.GraphTool.shortest_path(self.undirected_g, self.v_map['A'], self.v_map['E'])
         self.assertEqual("A -> D -> E", path)
 
     def test_unpack_paths(self):
@@ -31,7 +46,7 @@ class TestProblem2(unittest.TestCase):
 
     def test_union_find_join(self):
         uf = graph.UnionFind()
-        for v in self.g.get_all_vertices():
+        for v in self.undirected_g.get_all_vertices():
             uf.make_set(v, lambda x: x.get_id())
         a = self.v_map['A']
         b = self.v_map['B']
@@ -46,7 +61,7 @@ class TestProblem2(unittest.TestCase):
 
     def test_union_find_join_level_two_with_level_one(self):
         uf = graph.UnionFind()
-        for v in self.g.get_all_vertices():
+        for v in self.undirected_g.get_all_vertices():
             uf.make_set(v, lambda x: x.get_id())
         a = self.v_map['A']
         b = self.v_map['B']
@@ -70,7 +85,7 @@ class TestProblem2(unittest.TestCase):
 
     def test_union_find_join_level_3_with_level_2(self):
         uf = graph.UnionFind()
-        for v in self.g.get_all_vertices():
+        for v in self.undirected_g.get_all_vertices():
             uf.make_set(v, lambda x: x.get_id())
         a = self.v_map['A']
         b = self.v_map['B']
@@ -113,15 +128,16 @@ class TestProblem2(unittest.TestCase):
 
     def test_union_find_find(self):
         uf = graph.UnionFind()
-        for v in self.g.get_all_vertices():
+        for v in self.undirected_g.get_all_vertices():
             uf.make_set(v, lambda x: x.get_id())
         a = self.v_map['A']
         aprime = uf.find_set(a)
         self.assertEqual(a.get_id(), aprime.get_nid())
 
     def test_mst(self):
-        mst = graph.GraphTool.mst(self.g)
+        mst = graph.GraphTool.mst(self.undirected_g)
         self.assertEqual('a', 'a')
+
 
 if __name__ == '__main__':
     unittest.main()
