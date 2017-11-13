@@ -240,12 +240,14 @@ class Graph:
             for v, edge in vmap.items():
                 if edge:
                     l.add(edge)
+
         return list(l)
 
     def get_all_vertices(self):
         l = set()
         for u in self.__outgoing.items():
             l.add(u[0])
+
         return list(l)
 
 
@@ -257,6 +259,7 @@ class GraphTool:
         while path is not None:
             GraphTool.augment(g, path)
             path = GraphTool.dfs(g, s, t)
+
         return sum(g.get_flow(s, v) for v in g.get_all_vertices())
 
     @staticmethod
@@ -274,6 +277,7 @@ class GraphTool:
             cap = e.get_data()
             flw = g.get_flow(u, v)
             vals.append(cap - flw)
+
         return min(vals)
 
     @staticmethod

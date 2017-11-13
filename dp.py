@@ -5,20 +5,30 @@ class RNA:
             self.r = r
 
     def secondary_structure(self, s):
+        opt = [[0]]
         n = len(s)
-
-    def opt(self, i, j, n):
-        for k in range(3, 10):
-            for i in range(0, n - k):
+        for k in range(4, 10):
+            for i in range(n - k):
                 j = i + k
-                vals = []
-                l = 0
-                for t in range(i, j - 4):
-                    vals[l] = self.compute_opt(i, j, t)
-                    l += 1
+                max(opt[i, j - 1], self.max_base_pairs(i, j, opt))
 
-    def compute_opt(self, i, j, t):
-        max(self.secondary_structure(i, j - 1), max())
+    def max_base_pairs(self, s, i, j, opt):
+        vals = []
+        for k, t in enumerate(range(j-4)):
+            if self.is_match(s[t], s[j], s):
+                vals[k] = 1 + opt[i, t - 1] + opt[t + 1,  - 1]
+
+    def is_match(self, x, y, s):
+        if s[x] is 'C' and s[y] is 'G':
+            return True
+        elif s[x] is 'G' and s[y] is 'C':
+            return True
+        elif s[x] is 'A' and s[y] is 'U':
+            return True
+        elif s[x] is 'U' and s[y] is 'A':
+            return True
+        else:
+            return False
 
     def populate_base(self, M, m, n):
         for i in range(0, n + 1):
