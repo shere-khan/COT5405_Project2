@@ -7,11 +7,6 @@ class TestProblem2(unittest.TestCase):
         self.dynprog = dp.RNA()
 
     def test_alignment(self):
-        # s1 = 'AACGD'
-        # s2 = 'ACTGY'
-        # s1 = 'AACGDXXQQQY'
-        # s2 = 'ACTGQXCQY'
-
         s1 = 'AGGCTATCACCTGACCTCCAGGCCGATGCCC'
         s2 = 'TAGCTATCACGACCGCGGTCGATTTGCCCGAC'
 
@@ -26,6 +21,15 @@ class TestProblem2(unittest.TestCase):
         print('Edit Distance: ' + str(align[-1][-1][0]))
         print('s1: ' + r1)
         print('s2: ' + r2)
+
+    def test_secondary_structure(self):
+        # s1 = 'AAXXUUCGGGUUXYCCGUAGCAAUGG'
+        s = 'ACAUGAUGGCCAUGU'
+        # s1 = 'ACAUGAUGGCCAUGU'
+
+        ss_score = self.dynprog.secondary_structure(s)
+
+        print(ss_score)
 
     @staticmethod
     def cost(x, y):
