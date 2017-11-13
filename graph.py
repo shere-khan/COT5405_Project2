@@ -10,6 +10,13 @@ class Vertex:
         self.__object_id = id(self)
         self.__data = x
         self.__discovered = False
+        self.__visited = False
+
+    def get_visited(self):
+        return self.__visited
+
+    def set_visited(self, val):
+        self.__visited = val
 
     def get_id(self):
         return self.__id
@@ -33,10 +40,12 @@ class Vertex:
         return hash(id(self))
 
     def __repr__(self):
-        return "id: {} data: {}".format(self.__id, self.__data)
+        # return "id: {} data: {}".format(self.__id, self.__data)
+        return "id: {}".format(self.__id)
 
     def __str__(self):
-        return "id: {} data: {}".format(self.__id, self.__data)
+        # return "id: {} data: {}".format(self.__id, self.__data)
+        return "id: {}".format(self.__id)
 
     def __eq__(self, other):
         return self.get_data() == other.get_data() and self.get_id() == other.get_id()
@@ -79,45 +88,100 @@ class Graph:
     def __init__(self, directed=False):
         self.__outgoing = {}
         self.__incoming = {} if directed else self.__outgoing
+        self.__flow = {}
+        self.__flow_r = {}
 
     def outgoing(self):
         return self.__outgoing
 
+    def incoming(self):
+        return self.__incoming
+
+    def get_edge(self, u, v):
+        return self.__outgoing[u][v]
+
+    def get_flow(self, u, v):
+        return self.__flow[u][v]
+
+    def set_flow(self, u, v, val):
+        self.__flow[u][v] = val
+
+    def set_flow_r(self, u, v, val):
+        self.__flow_r[u][v] = val
+
+    def get_flow_r(self, u, v):
+        return self.__flow_r[u][v]
+
     def is_directed(self):
         return self.__incoming is not self.__outgoing
 
+    def init_flows(self, v):
+        """
+        initializes the flow and flow_r matrices representing flows on forward edges
+        and flows in the residual graph on backward edges
+
+        :param v:
+        :return:
+        """
+        node_map = {v: 0}
+        for u, vmap in self.__flow.items():
+            node_map[u] = 0
+            vmap[v] = 0
+
+        self.__flow[v] = node_map
+
+        node_map = {v: {}}
+        for u, vmap in self.__flow_r.items():
+            node_map[u] = 0
+            vmap[v] = 0
+
+        self.__flow_r[v] = node_map
+
+        return v
+
     def insert_vertex_object(self, v):
+        """
+        initialize the new node's map that has as
+        keys all the nodes in the current outgoing map
+        set the new node as a key for itself
+        set the new node as a key for all the existing nodes
+
+        :param v:
+        :return:
+        """
+
         node_map = {v: {}}
         for u, vmap in self.__outgoing.items():
-            # initialize the new node's map that has as
-            # keys all the nodes in the current outgoing map
             node_map[u] = {}
-            # set the new node as a key for itself
-            # set the new node as a key for all the existing nodes
             vmap[v] = {}
 
         self.__outgoing[v] = node_map
 
+        node_map = {v: {}}
         if self.is_directed():
             for u, vmap in self.__incoming.items():
-                # initialize the new node's map that has as
-                # keys all the nodes in the current outgoing map
                 node_map[u] = {}
-                # set the new node as a key for itself
-                # set the new node as a key for all the existing nodes
                 vmap[v] = {}
+
+        self.__incoming[v] = node_map
 
         return v
 
     def insert_vertex(self, v_id, x=None):
+        """
+            initialize the new node's map that has as
+            keys all the nodes in the current outgoing map
+            set the new node as a key for itself
+            set the new node as a key for all the existing nodes
+        :param v_id:
+        :param x:
+        :return:
+        """
+
         v = Vertex(v_id, x)
         node_map = {v: {}}
         for u, vmap in self.__outgoing.items():
-            # initialize the new node's map that has as
-            # keys all the nodes in the current outgoing map
             node_map[u] = {}
-            # set the new node as a key for itself
-            # set the new node as a key for all the existing nodes
             vmap[v] = {}
 
         self.__outgoing[v] = node_map
@@ -125,11 +189,7 @@ class Graph:
         node_map = {v: {}}
         if self.is_directed():
             for u, vmap in self.__incoming.items():
-                # initialize the new node's map that has as
-                # keys all the nodes in the current outgoing map
                 node_map[u] = {}
-                # set the new node as a key for itself
-                # set the new node as a key for all the existing nodes
                 vmap[v] = {}
 
         self.__incoming[v] = node_map
@@ -191,65 +251,126 @@ class Graph:
 
 class GraphTool:
     @staticmethod
-    def dfs(g, s, t, capacity, flow):
+    def maxflow(g, s, t):
+        n = len(g.outgoing())
+        path = GraphTool.dfs(g, s, t)
+        while path is not None:
+            GraphTool.augment(g, path)
+            path = GraphTool.dfs(g, s, t)
+        return sum(g.get_flow(s, v) for v in g.get_all_vertices())
+
+    @staticmethod
+    def augment(g, path):
+        flow = GraphTool.get_bottleneck(g, path)
+        for u, v in path:
+            g.set_flow(u, v, g.get_flow(u, v) + flow)
+            g.set_flow(v, u, g.get_flow(v, u) - flow)
+
+    @staticmethod
+    def get_bottleneck(g, path):
+        vals = list()
+        for u, v in path:
+            e = g.get_edge(u, v)
+            cap = e.get_data()
+            flw = g.get_flow(u, v)
+            vals.append(cap - flw)
+        return min(vals)
+
+    @staticmethod
+    def dfs(g, s, t):
+        GraphTool.set_vertices_unvisited(g)
         stk = [s]
-        paths = {s:[]}
+        paths = {s: []}
         if s is t:
             return paths[s]
         while stk:
             u = stk.pop()
             for e in g.adjacent_edges(u):
                 v = e.get_end()
-                if capacity[e] - flow[e] > 0 and v not in paths:
+                cap = g.get_edge(u, v).get_data()
+                flw = g.get_flow(u, v)
+                if cap - flw > 0 and v.get_visited() is False:
+                    v.set_visited(True)
                     paths[v] = paths[u] + [(u, v)]
-                    print(paths)
+                    for x, y in paths[v]:
+                        print("({}, {}) ".format(x, y), end="")
+                    print()
                     if v is t:
                         return paths[v]
                     stk.append(v)
 
+    @staticmethod
+    def set_vertices_unvisited(g):
+        for u in g.get_all_vertices():
+            u.set_visited(False)
+
+    @staticmethod
+    def __init_flow(v_map, flow):
+        flow[v_map[1]] = {v_map[2]: 0}
+        flow[v_map[1]][v_map[3]] = 0
+        flow[v_map[1]][v_map[4]] = 0
+
+        flow[v_map[2]] = {v_map[5]: 0}
+        flow[v_map[2]][v_map[6]] = 0
+        flow[v_map[2]][v_map[3]] = 0
+
+        flow[v_map[3]] = {v_map[6]: 0}
+        flow[v_map[3]][v_map[4]] = 0
+
+        flow[v_map[4]] = {v_map[7]: 0}
+
+        flow[v_map[5]] = {v_map[8]: 0}
+        flow[v_map[5]][v_map[6]] = 0
+
+        flow[v_map[6]] = {v_map[8]: 0}
+        flow[v_map[6]][v_map[7]] = 0
+
+        flow[v_map[7]] = {v_map[8]: 0}
+        flow[v_map[7]][v_map[3]] = 0
 
     @staticmethod
     def create_hardcoded_maxflow_graph(g, v_map, l):
         for i in range(1, 9):
             v = g.insert_vertex(i, "oo")
+            g.init_flows(v)
             v_map[i] = v
 
-        v = g.insert_edge(v_map[1], v_map[2], 10)
-        l.append(v)
-        v = g.insert_edge(v_map[1], v_map[3], 5)
-        l.append(v)
-        v = g.insert_edge(v_map[1], v_map[4], 15)
-        l.append(v)
+        e = g.insert_edge(v_map[1], v_map[2], 10)
+        l.append(e)
+        e = g.insert_edge(v_map[1], v_map[3], 5)
+        l.append(e)
+        e = g.insert_edge(v_map[1], v_map[4], 15)
+        l.append(e)
 
-        v = g.insert_edge(v_map[2], v_map[5], 9)
-        l.append(v)
-        v = g.insert_edge(v_map[2], v_map[6], 15)
-        l.append(v)
-        v = g.insert_edge(v_map[2], v_map[3], 4)
-        l.append(v)
+        e = g.insert_edge(v_map[2], v_map[5], 9)
+        l.append(e)
+        e = g.insert_edge(v_map[2], v_map[6], 15)
+        l.append(e)
+        e = g.insert_edge(v_map[2], v_map[3], 4)
+        l.append(e)
 
-        v = g.insert_edge(v_map[3], v_map[6], 8)
-        l.append(v)
-        v = g.insert_edge(v_map[3], v_map[4], 4)
-        l.append(v)
+        e = g.insert_edge(v_map[3], v_map[6], 8)
+        l.append(e)
+        e = g.insert_edge(v_map[3], v_map[4], 4)
+        l.append(e)
 
-        v = g.insert_edge(v_map[4], v_map[7], 30)
-        l.append(v)
+        e = g.insert_edge(v_map[4], v_map[7], 30)
+        l.append(e)
 
-        v = g.insert_edge(v_map[5], v_map[8], 10)
-        l.append(v)
-        v = g.insert_edge(v_map[5], v_map[6], 15)
-        l.append(v)
+        e = g.insert_edge(v_map[5], v_map[8], 10)
+        l.append(e)
+        e = g.insert_edge(v_map[5], v_map[6], 15)
+        l.append(e)
 
-        v = g.insert_edge(v_map[6], v_map[8], 10)
-        l.append(v)
-        v = g.insert_edge(v_map[6], v_map[7], 15)
-        l.append(v)
+        e = g.insert_edge(v_map[6], v_map[8], 10)
+        l.append(e)
+        e = g.insert_edge(v_map[6], v_map[7], 15)
+        l.append(e)
 
-        v = g.insert_edge(v_map[7], v_map[8], 10)
-        l.append(v)
-        v = g.insert_edge(v_map[7], v_map[3], 6)
-        l.append(v)
+        e = g.insert_edge(v_map[7], v_map[8], 10)
+        l.append(e)
+        e = g.insert_edge(v_map[7], v_map[3], 6)
+        l.append(e)
 
     @staticmethod
     def create_hardcoded_undirected_graph(g, v_map, l):
