@@ -122,6 +122,7 @@ class Graph:
 
         self.__outgoing[v] = node_map
 
+        node_map = {v: {}}
         if self.is_directed():
             for u, vmap in self.__incoming.items():
                 # initialize the new node's map that has as
@@ -130,6 +131,8 @@ class Graph:
                 # set the new node as a key for itself
                 # set the new node as a key for all the existing nodes
                 vmap[v] = {}
+
+        self.__incoming[v] = node_map
 
         return v
 
