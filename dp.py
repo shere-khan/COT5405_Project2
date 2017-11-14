@@ -4,31 +4,56 @@ class RNA:
             self.l = l
             self.r = r
 
+    def opt_rec(self, i, j, M, s):
+        if i >= j - 4:
+            return 0
+        if M[i][j] is not None:
+            return M[i][j]
+        vals = []
+        opt1 = self.opt_rec(i, j - 1, M, s)
+        for t in range(i, j - 4):
+            if self.is_match(s[i], s[j]):
+                vals.append(1 + self.opt_rec(i, t - 1, M, s) + self.opt_rec(t + 1, j - 1, M, s))
+        if not vals:
+            opt2 = 0
+        else:
+            opt2 = max(vals)
+        sol = max(opt1, opt2)
+        M[i][j] = sol
+
+        return sol
+
     def secondary_structure(self, s):
-        opt = [[0]]
         n = len(s)
-        for k in range(5, 10):
-            for i in range(n - k):
-                j = i + k
-                b = self.max_base_pairs(s, i, j, opt)
-                opt[i][j] = max(opt[i][j - 1], b)
+        M = [[None] * n for i in range(len(s))]
+        sol = self.opt_rec(0, n - 1, M, s)
+
+        return sol
+
+        # opt = [[0]]
+        # n = len(s)
+        # for k in range(5, 10):
+        #     for i in range(1, n - k):
+        #         j = i + k
+        #         b = self.max_base_pairs(s, i, j, opt)
+        #         opt[i][j] = max(opt[i][j - 1], b)
 
     def max_base_pairs(self, s, i, j, opt):
         vals = []
-        for k, t in enumerate(range(j-4)):
-            if self.is_match(s[t], s[j]):
-                vals[k] = 1 + opt[i, t - 1] + opt[t + 1,  - 1]
+        for t in range(1, j - 4):
+            if self.is_match(s[t - 1], s[j - 1]):
+                vals.append(1 + opt[i, t - 1] + opt[t + 1, - 1])
 
         return max(vals)
 
     def is_match(self, x, y):
-        if x is 'C' and s[y] is 'G':
+        if x is 'C' and y is 'G':
             return True
-        elif s[x] is 'G' and s[y] is 'C':
+        elif x is 'G' and y is 'C':
             return True
-        elif s[x] is 'A' and s[y] is 'U':
+        elif x is 'A' and y is 'U':
             return True
-        elif s[x] is 'U' and s[y] is 'A':
+        elif x is 'U' and y is 'A':
             return True
         else:
             return False

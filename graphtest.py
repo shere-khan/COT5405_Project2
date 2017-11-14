@@ -23,29 +23,6 @@ class TestProblem2(unittest.TestCase):
         s = self.v_map_directed[1]
         t = self.v_map_directed[8]
 
-        # flow = {}
-        # flow[self.v_map_directed[1]] = {self.v_map_directed[2]: 0}
-        # flow[self.v_map_directed[1]][self.v_map_directed[3]]= 0
-        # flow[self.v_map_directed[1]][self.v_map_directed[4]] = 0
-        #
-        # flow[self.v_map_directed[2]] = {self.v_map_directed[5]: 0}
-        # flow[self.v_map_directed[2]][self.v_map_directed[6]] = 0
-        # flow[self.v_map_directed[2]][self.v_map_directed[3]] = 0
-        #
-        # flow[self.v_map_directed[3]] = {self.v_map_directed[6]: 0}
-        # flow[self.v_map_directed[3]][self.v_map_directed[4]] = 0
-        #
-        # flow[self.v_map_directed[4]] = {self.v_map_directed[7]: 0}
-        #
-        # flow[self.v_map_directed[5]] = {self.v_map_directed[8]: 0}
-        # flow[self.v_map_directed[5]][self.v_map_directed[6]] = 0
-        #
-        # flow[self.v_map_directed[6]] = {self.v_map_directed[8]: 0}
-        # flow[self.v_map_directed[6]][self.v_map_directed[7]] = 0
-        #
-        # flow[self.v_map_directed[7]] = {self.v_map_directed[8]: 0}
-        # flow[self.v_map_directed[7]][self.v_map_directed[3]] = 0
-
         mf = graph.GraphTool.maxflow(self.directed_g, s, t)
 
         print('Maxflow is: ' + str(mf))

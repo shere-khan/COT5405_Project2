@@ -21,15 +21,13 @@ class TestProblem2(unittest.TestCase):
         print('Edit Distance: ' + str(align[-1][-1][0]))
         print('s1: ' + r1)
         print('s2: ' + r2)
+        print()
 
     def test_secondary_structure(self):
-        # s1 = 'AAXXUUCGGGUUXYCCGUAGCAAUGG'
-        s = 'ACAUGAUGGCCAUGU'
-        # s1 = 'ACAUGAUGGCCAUGU'
-
+        s = 'AUGGCUACCGGUCGAUUGAGCGCCAAUGUAAUCAUU'
         ss_score = self.dynprog.secondary_structure(s)
-
-        print(ss_score)
+        print("String: " + s)
+        print("Number of matching pairs: " + str(ss_score))
 
     @staticmethod
     def cost(x, y):
