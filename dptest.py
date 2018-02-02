@@ -7,8 +7,11 @@ class TestProblem2(unittest.TestCase):
         self.dynprog = dp.RNA()
 
     def test_alignment(self):
-        s1 = 'AGGCTATCACCTGACCTCCAGGCCGATGCCC'
-        s2 = 'TAGCTATCACGACCGCGGTCGATTTGCCCGAC'
+        # s1 = 'AGGCTATCACCTGACCTCCAGGCCGATGCCC'
+        # s2 = 'TAGCTATCACGACCGCGGTCGATTTGCCCGAC'
+
+        s1 = 'ACAGATTA'
+        s2 = 'TAGCTTA'
 
         f = lambda x, y: 1 if y == "" or x == "" or x != y else 2
 
@@ -34,7 +37,7 @@ class TestProblem2(unittest.TestCase):
         if y == "" or x == "":
             return 1
         if x != y:
-            return 2
+            return 1
         if x == y:
             return 0
 
